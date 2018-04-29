@@ -20,15 +20,12 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                switch (position) {
-
-                }
-                return null;
+                return MachinesFragment.newInstance();
             }
 
             @Override
             public int getCount() {
-                return 0;
+                return 3;
             }
         });
     }
