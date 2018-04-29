@@ -1,6 +1,8 @@
 package com.kimentii.vmccnc;
 
-public class Machine {
+import java.io.Serializable;
+
+public class Machine implements Serializable {
     String name;
 
     public Machine(String name) {

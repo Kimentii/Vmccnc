@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachinesFragment extends Fragment {
+    public static final int LAYOUT_TYPE_GRID = 1;
+    public static final int LAYOUT_TYPE_LIST = 2;
     public static final String TAG = MachinesFragment.class.getSimpleName();
+    private static final String EXTRA_MACHINES_ARRAY_LIST = "extra_machines_array_list";
+    private static final String EXTRA_LAYOUT_TYPE = "extra_layout_type";
 
     private RecyclerView mRecyclerView;
     private MachineAdapter mMachineAdapter;
@@ -24,21 +28,23 @@ public class MachinesFragment extends Fragment {
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_machines, container, false);
+        Bundle args = getArguments();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rc_machines);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
                 5));
-        ArrayList<Machine> machines = new ArrayList<>();
-        machines.add(new Machine("machine 1"));
-        machines.add(new Machine("machine 1"));
-        machines.add(new Machine("machine 1"));
-        machines.add(new Machine("machine 1"));
-        updateUI(machines);
+        ArrayList<Machine> machineArrayList = (ArrayList<Machine>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
+
+        updateUI(machineArrayList);
 
         return view;
     }
 
-    public static MachinesFragment newInstance() {
+    public static MachinesFragment newInstance(ArrayList<Machine> machineArrayList, int layoutType) {
         MachinesFragment fragment = new MachinesFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_MACHINES_ARRAY_LIST, machineArrayList);
+        args.putInt(EXTRA_LAYOUT_TYPE, layoutType);
+        fragment.setArguments(args);
         return fragment;
     }
 

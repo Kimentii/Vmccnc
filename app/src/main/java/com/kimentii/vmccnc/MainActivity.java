@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
@@ -20,7 +22,12 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return MachinesFragment.newInstance();
+                ArrayList<Machine> machines = new ArrayList<>();
+                machines.add(new Machine("machine 1"));
+                machines.add(new Machine("machine 1"));
+                machines.add(new Machine("machine 1"));
+                machines.add(new Machine("machine 1"));
+                return MachinesFragment.newInstance(machines, MachinesFragment.LAYOUT_TYPE_GRID);
             }
 
             @Override
