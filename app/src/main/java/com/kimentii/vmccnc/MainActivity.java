@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -35,5 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 return 3;
             }
         });
+        TabLayout tabLayout = findViewById(R.id.tl_dots);
+        tabLayout.setupWithViewPager(mViewPager, true);
     }
 }
