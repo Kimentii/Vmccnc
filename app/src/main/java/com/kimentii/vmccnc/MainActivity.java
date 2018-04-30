@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public Fragment getItem(int position) {
                 ArrayList<Machine> machines = new ArrayList<>();
-                machines.add(new Machine("machine 1"));
-                machines.add(new Machine("machine 1"));
-                machines.add(new Machine("machine 1"));
-                machines.add(new Machine("machine 1"));
+                machines.add(new Machine());
+                machines.add(new Machine());
+                machines.add(new Machine());
+                machines.add(new Machine());
                 return MachinesFragment.newInstance(machines, MachinesFragment.LAYOUT_TYPE_GRID);
             }
 
