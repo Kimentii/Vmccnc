@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,8 +32,11 @@ public class MachinesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_machines, container, false);
         Bundle args = getArguments();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rc_machines);
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 150);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
-                5));
+                noOfColumns));
         ArrayList<Machine> machineArrayList = (ArrayList<Machine>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
 
         updateUI(machineArrayList);
@@ -62,17 +67,23 @@ public class MachinesFragment extends Fragment {
     private class MachineHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Machine mMachine;
         private TextView mNameTextView;
+        private TextView mIdTextView;
+        private ImageView mPhotoImageView;
 
-        public void bindApp(Machine machine, int position) {
+        public void bindMachine(Machine machine, int position) {
             this.mMachine = machine;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(machine.getName());
+            mPhotoImageView.setImageDrawable(getActivity().getResources().getDrawable(machine.getImageId()));
+            mIdTextView.setText(machine.getId());
         }
 
         public MachineHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mNameTextView = itemView.findViewById(R.id.tv_name);
+            mIdTextView = itemView.findViewById(R.id.tv_id);
+            mPhotoImageView = itemView.findViewById(R.id.iv_photo);
         }
 
         @Override
@@ -99,7 +110,7 @@ public class MachinesFragment extends Fragment {
         @Override
         public void onBindViewHolder(MachineHolder holder, int position) {
             Machine machine = mMachineList.get(position);
-            holder.bindApp(machine, position);
+            holder.bindMachine(machine, position);
         }
 
         public void setApps(List<Machine> appsList) {

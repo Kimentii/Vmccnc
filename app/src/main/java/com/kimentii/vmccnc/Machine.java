@@ -20,7 +20,7 @@ public class Machine implements Serializable {
 
     public Machine() {
         Random random = new Random();
-        int num = random.nextInt() % 5;
+        int num = Math.abs(random.nextInt() % 5);
         name = NAMES[num];
         type = TYPES[num];
         location = LOCATION[num];
