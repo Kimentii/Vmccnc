@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:showIn="navigation_view">
+      xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/nav_camera"
-        android:title="Import"/>
-
+        android:id="@+id/category_vertical_machining_centers"
+        android:title="Vertical Machining Centers"/>
+    <item
+        android:id="@+id/category_horizontal_machining_centers"
+        android:title="Horizontal Machining Centers"/>
+    <item
+        android:id="@+id/category_lathes_cnc"
+        android:title="Lathes CNC"/>
+    <item
+        android:id="@+id/category_oil_gas_industry"
+        android:title="Oil, Gas Industry"/>
+    <item
+        android:id="@+id/category_live_tool"
+        android:title="Live tool"/>
 </menu>
