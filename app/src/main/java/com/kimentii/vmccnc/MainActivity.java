@@ -13,15 +13,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    static final String TAG = MainActivity.class.getSimpleName();
 
     private ViewPager mViewPager;
+    private ArrayList<Machine> mMachineArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,37 +33,17 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Vertical Machining Centers");
 
         mViewPager = findViewById(R.id.vp_machines);
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final ArrayList<Machine> machines = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            machines.add(new Machine());
-        }
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        final int rowsNum = (int) (dpHeight / 150);
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        final int columnsNum = (int) (dpWidth / 150);
-        final int itemsPerTab = rowsNum * columnsNum;
-        final int tabsNum = (int) Math.ceil((double) machines.size() / itemsPerTab);
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
-            @Override
-            public Fragment getItem(int position) {
-                ArrayList<Machine> tabMachines = new ArrayList<>();
-                for (int i = position * itemsPerTab;
-                     (i < position * itemsPerTab + itemsPerTab) && i < machines.size();
-                     i++) {
-                    tabMachines.add(machines.get(i));
-                }
-                return MachinesFragmentGrid.newInstance(tabMachines, columnsNum);
-            }
 
-            @Override
-            public int getCount() {
-                return tabsNum;
-            }
-        });
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mMachineArrayList = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            mMachineArrayList.add(new Machine());
+        }
+
+        mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
 
         TabLayout tabLayout = findViewById(R.id.tl_dots);
         tabLayout.setupWithViewPager(mViewPager, true);
@@ -86,21 +70,28 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final TabLayout tabLayout = findViewById(R.id.tl_dots);
+        switch (id) {
+            case R.id.action_change_view:
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
+                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, mMachineArrayList));
+                    toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_grid);
+                    tabLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
+                    toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
+                    tabLayout.setVisibility(View.VISIBLE);
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -113,5 +104,64 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class GridPagerAdapter extends FragmentStatePagerAdapter {
+
+        private ArrayList<Machine> mMachineArrayList;
+        private int mItemsPerTab;
+        private int mColumnsNum;
+        private volatile int mTabsNum;
+
+        public GridPagerAdapter(FragmentManager fm, ArrayList<Machine> machineArrayList) {
+            super(fm);
+            this.mMachineArrayList = machineArrayList;
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+            int rowsNum = (int) (dpHeight / 150);
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            mColumnsNum = (int) (dpWidth / 150);
+            mItemsPerTab = rowsNum * mColumnsNum;
+            mTabsNum = (int) Math.ceil((double) mMachineArrayList.size() / mItemsPerTab);
+            Log.d(TAG, "Tabs num: " + mTabsNum);
+            Log.d(TAG, "mColumnsNum: " + mColumnsNum);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            ArrayList<Machine> tabMachines = new ArrayList<>();
+            for (int i = position * mItemsPerTab;
+                 (i < position * mItemsPerTab + mItemsPerTab) && i < mMachineArrayList.size();
+                 i++) {
+                tabMachines.add(mMachineArrayList.get(i));
+            }
+            Log.d(TAG, "getItem");
+            return MachinesFragmentGrid.newInstance(tabMachines, mColumnsNum);
+        }
+
+        @Override
+        public int getCount() {
+            return mTabsNum;
+        }
+    }
+
+    private class ListPagerAdapter extends FragmentStatePagerAdapter {
+
+        private ArrayList<Machine> mMachineArrayList;
+
+        public ListPagerAdapter(FragmentManager fm, ArrayList<Machine> machineArrayList) {
+            super(fm);
+            mMachineArrayList = machineArrayList;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return MachinesFragmentList.newInstance(mMachineArrayList);
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
     }
 }
