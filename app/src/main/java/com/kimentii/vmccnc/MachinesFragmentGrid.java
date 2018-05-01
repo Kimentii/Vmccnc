@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MachinesFragment extends Fragment {
-    public static final int LAYOUT_TYPE_GRID = 1;
-    public static final int LAYOUT_TYPE_LIST = 2;
-    public static final String TAG = MachinesFragment.class.getSimpleName();
+public class MachinesFragmentGrid extends Fragment {
+    public static final String TAG = MachinesFragmentGrid.class.getSimpleName();
     private static final String EXTRA_MACHINES_ARRAY_LIST = "extra_machines_array_list";
-    private static final String EXTRA_LAYOUT_TYPE = "extra_layout_type";
+    private static final String EXTRA_SPAN_COUNT = "extra_span_count";
 
     private RecyclerView mRecyclerView;
     private MachineAdapter mMachineAdapter;
@@ -32,11 +29,8 @@ public class MachinesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_machines, container, false);
         Bundle args = getArguments();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rc_machines);
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (dpWidth / 150);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
-                noOfColumns));
+                args.getInt(EXTRA_SPAN_COUNT)));
         ArrayList<Machine> machineArrayList = (ArrayList<Machine>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
 
         updateUI(machineArrayList);
@@ -44,11 +38,11 @@ public class MachinesFragment extends Fragment {
         return view;
     }
 
-    public static MachinesFragment newInstance(ArrayList<Machine> machineArrayList, int layoutType) {
-        MachinesFragment fragment = new MachinesFragment();
+    public static MachinesFragmentGrid newInstance(ArrayList<Machine> machineArrayList, int spanCount) {
+        MachinesFragmentGrid fragment = new MachinesFragmentGrid();
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_MACHINES_ARRAY_LIST, machineArrayList);
-        args.putInt(EXTRA_LAYOUT_TYPE, layoutType);
+        args.putInt(EXTRA_SPAN_COUNT, spanCount);
         fragment.setArguments(args);
         return fragment;
     }

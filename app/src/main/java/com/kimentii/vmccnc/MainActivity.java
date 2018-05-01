@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,20 +32,32 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager = findViewById(R.id.vp_machines);
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        final ArrayList<Machine> machines = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            machines.add(new Machine());
+        }
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        final int rowsNum = (int) (dpHeight / 150);
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        final int columnsNum = (int) (dpWidth / 150);
+        final int itemsPerTab = rowsNum * columnsNum;
+        final int tabsNum = (int) Math.ceil((double) machines.size() / itemsPerTab);
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                ArrayList<Machine> machines = new ArrayList<>();
-                machines.add(new Machine());
-                machines.add(new Machine());
-                machines.add(new Machine());
-                machines.add(new Machine());
-                return MachinesFragment.newInstance(machines, MachinesFragment.LAYOUT_TYPE_GRID);
+                ArrayList<Machine> tabMachines = new ArrayList<>();
+                for (int i = position * itemsPerTab;
+                     (i < position * itemsPerTab + itemsPerTab) && i < machines.size();
+                     i++) {
+                    tabMachines.add(machines.get(i));
+                }
+                return MachinesFragmentGrid.newInstance(tabMachines, columnsNum);
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return tabsNum;
             }
         });
 
