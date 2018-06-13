@@ -1,5 +1,9 @@
 package com.kimentii.vmccnc;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -19,19 +23,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     static final String TAG = MainActivity.class.getSimpleName();
 
+    private static final String BROADCAST_FILTER = "com.kimentii.vmccnc.MainActivity";
+    private static final String EXTRA_DATA_ARRAY = "com.kimentii.vmccnc.extra.DATA_ARRAY";
+    private static final String EXTRA_DATA_TYPE = "com.kimentii.cmcncc.extra.DATA_TYPE";
+
+    public static final int DATA_TYPE_AUTOMATIC_LINE = 1;
+    public static final int DATA_TYPE_LATHE = 2;
+    public static final int DATA_TYPE_LIVETOOL = 3;
+    public static final int DATA_TYPE_TUBE = 4;
+
     private ViewPager mViewPager;
     private ArrayList<Machine> mMachineArrayList;
+    private MainActivityBroadCastReceiver mMainActivityBroadCastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_FILTER);
+        mMainActivityBroadCastReceiver = new MainActivityBroadCastReceiver();
+        registerReceiver(mMainActivityBroadCastReceiver, intentFilter);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Vertical Machining Centers");
@@ -58,6 +79,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mMainActivityBroadCastReceiver);
     }
 
     @Override
@@ -164,6 +191,39 @@ public class MainActivity extends AppCompatActivity
         @Override
         public int getCount() {
             return 1;
+        }
+    }
+
+    public static void sendDataViaBroadcastReceiver(Context context, int dataType, ArrayList<Serializable> data) {
+        Intent broadcastIntent = new Intent(BROADCAST_FILTER);
+        broadcastIntent.putExtra(EXTRA_DATA_TYPE, dataType);
+        broadcastIntent.putExtra(EXTRA_DATA_ARRAY, data);
+        context.sendBroadcast(broadcastIntent);
+    }
+
+    class MainActivityBroadCastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundleData = intent.getExtras();
+            if (bundleData != null) {
+                int dataType = bundleData.getInt(EXTRA_DATA_TYPE);
+                ArrayList<Serializable> data = (ArrayList<Serializable>) bundleData.getSerializable(EXTRA_DATA_ARRAY);
+                switch (dataType) {
+                    case DATA_TYPE_AUTOMATIC_LINE:
+                        for (int i = 0; i < data.size(); i++) {
+                            Log.d(TAG, "onReceive: id: " + ((AutomaticLine) data.get(i)).getId());
+                        }
+                        break;
+                    case DATA_TYPE_LATHE:
+                        break;
+                    case DATA_TYPE_LIVETOOL:
+                        break;
+                    case DATA_TYPE_TUBE:
+                        break;
+                }
+            }
+
         }
     }
 }

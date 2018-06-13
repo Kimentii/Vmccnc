@@ -5,7 +5,9 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
-public class AutomaticLine {
+import java.io.Serializable;
+
+public class AutomaticLine implements Serializable {
     private String id;
     private String type_en;
     private String type_ru;

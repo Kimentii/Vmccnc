@@ -4,21 +4,22 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class NetworkIntentService extends IntentService {
     private static final String TAG = NetworkIntentService.class.getSimpleName();
 
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_GET_AUTOMATIC_LINES = "com.kimentii.vmccnc.action.GET_AUTOMATIC_LINES";
+    private static final String ACTION_GET_LATHES = "com.kimentii.vmccnc.action.GET_LATHE";
+    private static final String ACTION_GET_LIVETOOLS = "com.kimentii.vmccnc.action.GET_LIVETOOL";
+    private static final String ACTION_GET_TUBES = "com.kimentii.vmccnc.action.GET_TUBES";
 
     public NetworkIntentService() {
         super("NetworkIntentService");
@@ -52,15 +53,14 @@ public class NetworkIntentService extends IntentService {
         super.onDestroy();
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
     private void handleActionGetAutomaticLines() {
         MySqlHelper mySqlHelper = new MySqlHelper();
+        long startTime = System.currentTimeMillis();
         JSONArray jsonArray = mySqlHelper.executeQuery("SELECT * FROM automated_line");
+        long endTime = System.currentTimeMillis();
+        Log.d(TAG, "handleActionGetAutomaticLines: request time: " + String.valueOf(endTime - startTime));
         //Log.d(TAG, "Data:\n" + jsonArray.toString());
-        ArrayList<AutomaticLine> automaticLines = new ArrayList<>();
+        ArrayList<Serializable> automaticLines = new ArrayList<>();
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
@@ -70,9 +70,19 @@ public class NetworkIntentService extends IntentService {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "handleActionGetAutomaticLines: created machines list");
-        for (int i = 0; i < automaticLines.size(); i++) {
-            Log.d(TAG, "id: " + automaticLines.get(i).getId() + " type: " + automaticLines.get(i).getType_ru());
-        }
+        MainActivity.sendDataViaBroadcastReceiver(NetworkIntentService.this,
+                MainActivity.DATA_TYPE_AUTOMATIC_LINE, automaticLines);
+    }
+
+    private void handleActionGetLathes() {
+
+    }
+
+    private void handleActionGetLivetools() {
+
+    }
+
+    private void handleActionGetTubes() {
+
     }
 }
