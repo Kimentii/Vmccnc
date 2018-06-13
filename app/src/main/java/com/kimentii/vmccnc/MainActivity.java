@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("Vertical Machining Centers");
 
         mViewPager = findViewById(R.id.vp_machines);
+        NetworkIntentService.startActionGetAutomaticLines(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMachineArrayList = new ArrayList<>();
