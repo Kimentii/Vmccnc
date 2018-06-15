@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     public static final int DATA_TYPE_TUBE = 4;
 
     private ViewPager mViewPager;
-    private ArrayList<Machine> mMachineArrayList;
+    private ArrayList<AdapterGenerator> mMachineArrayList;
     private MainActivityBroadCastReceiver mMainActivityBroadCastReceiver;
 
     @Override
@@ -134,13 +134,14 @@ public class MainActivity extends AppCompatActivity
 
     private class GridPagerAdapter extends FragmentStatePagerAdapter {
 
-        private ArrayList<Machine> mMachineArrayList;
+        private ArrayList<AdapterGenerator> mMachineArrayList;
         private int mItemsPerTab;
         private int mColumnsNum;
         private volatile int mTabsNum;
 
-        public GridPagerAdapter(FragmentManager fm, ArrayList<Machine> machineArrayList) {
+        public GridPagerAdapter(FragmentManager fm, ArrayList<AdapterGenerator> machineArrayList) {
             super(fm);
+            // TODO: MainActivity has field with the same name.
             this.mMachineArrayList = machineArrayList;
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
@@ -148,14 +149,14 @@ public class MainActivity extends AppCompatActivity
             float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
             mColumnsNum = (int) (dpWidth / 150);
             mItemsPerTab = rowsNum * mColumnsNum;
-            mTabsNum = (int) Math.ceil((double) mMachineArrayList.size() / mItemsPerTab);
+            mTabsNum = (int) Math.ceil((double) machineArrayList.size() / mItemsPerTab);
             Log.d(TAG, "Tabs num: " + mTabsNum);
             Log.d(TAG, "mColumnsNum: " + mColumnsNum);
         }
 
         @Override
         public Fragment getItem(int position) {
-            ArrayList<Machine> tabMachines = new ArrayList<>();
+            ArrayList<AdapterGenerator> tabMachines = new ArrayList<>();
             for (int i = position * mItemsPerTab;
                  (i < position * mItemsPerTab + mItemsPerTab) && i < mMachineArrayList.size();
                  i++) {
@@ -173,9 +174,9 @@ public class MainActivity extends AppCompatActivity
 
     private class ListPagerAdapter extends FragmentStatePagerAdapter {
 
-        private ArrayList<Machine> mMachineArrayList;
+        private ArrayList<AdapterGenerator> mMachineArrayList;
 
-        public ListPagerAdapter(FragmentManager fm, ArrayList<Machine> machineArrayList) {
+        public ListPagerAdapter(FragmentManager fm, ArrayList<AdapterGenerator> machineArrayList) {
             super(fm);
             mMachineArrayList = machineArrayList;
         }
@@ -207,12 +208,18 @@ public class MainActivity extends AppCompatActivity
                 int dataType = bundleData.getInt(EXTRA_DATA_TYPE);
                 ArrayList<Serializable> data = (ArrayList<Serializable>) bundleData.getSerializable(EXTRA_DATA_ARRAY);
                 if (data != null) {
+                    mMachineArrayList = new ArrayList<>();
+                    for (int i = 0; i < data.size(); i++) {
+                        mMachineArrayList.add((AdapterGenerator) data.get(i));
+                    }
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
                         mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, mMachineArrayList));
                     } else {
                         mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
                     }
+                } else {
+                    Log.d(TAG, "onReceive: data is NULL!!!!!!!!!!!!");
                 }
             }
 

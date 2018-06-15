@@ -71,6 +71,9 @@ public class NetworkIntentService extends IntentService {
                 e.printStackTrace();
             }
         }
+        for (int i = 0; i < automaticLines.size(); i++) {
+            Log.d(TAG, "handleActionGetAutomaticLines: " + ((AutomaticLine) automaticLines.get(i)).getId());
+        }
         MainActivity.sendDataViaBroadcastReceiver(NetworkIntentService.this,
                 MainActivity.DATA_TYPE_AUTOMATIC_LINE, automaticLines);
     }

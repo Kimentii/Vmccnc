@@ -8,11 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MachinesFragmentGrid extends Fragment {
     public static final String TAG = MachinesFragmentGrid.class.getSimpleName();
@@ -20,7 +17,7 @@ public class MachinesFragmentGrid extends Fragment {
     private static final String EXTRA_SPAN_COUNT = "extra_span_count";
 
     private RecyclerView mRecyclerView;
-    private MachineAdapter mMachineAdapter;
+    private ItemAdapter mItemAdapter;
 
     @Override
     public View onCreateView(final LayoutInflater inflater,
@@ -31,14 +28,14 @@ public class MachinesFragmentGrid extends Fragment {
         mRecyclerView = view.findViewById(R.id.rc_machines);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
                 args.getInt(EXTRA_SPAN_COUNT)));
-        ArrayList<Machine> machineArrayList = (ArrayList<Machine>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
+        ArrayList<AdapterGenerator> machineArrayList = (ArrayList<AdapterGenerator>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
 
         updateUI(machineArrayList);
 
         return view;
     }
 
-    public static MachinesFragmentGrid newInstance(ArrayList<Machine> machineArrayList, int spanCount) {
+    public static MachinesFragmentGrid newInstance(ArrayList<AdapterGenerator> machineArrayList, int spanCount) {
         MachinesFragmentGrid fragment = new MachinesFragmentGrid();
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_MACHINES_ARRAY_LIST, machineArrayList);
@@ -47,73 +44,18 @@ public class MachinesFragmentGrid extends Fragment {
         return fragment;
     }
 
-    private void updateUI(ArrayList<Machine> machineArrayList) {
-        if (mMachineAdapter == null) {
-            mMachineAdapter = new MachineAdapter(machineArrayList);
-            mRecyclerView.setAdapter(mMachineAdapter);
+    private void updateUI(ArrayList<AdapterGenerator> machineArrayList) {
+        if (mItemAdapter == null) {
+            if (machineArrayList != null && machineArrayList.size() > 0) {
+                mItemAdapter = machineArrayList.get(0).getGridAdapter(getContext(), machineArrayList);
+                mRecyclerView.setAdapter(mItemAdapter);
+            } else {
+                Log.d(TAG, "updateUI: machineArrayList is empty");
+            }
         } else {
-            mMachineAdapter.setMachines(machineArrayList);
-            mMachineAdapter.notifyDataSetChanged();
+            mItemAdapter.setItems(machineArrayList);
+            mItemAdapter.notifyDataSetChanged();
         }
     }
 
-
-    private class MachineHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Machine mMachine;
-        private TextView mNameTextView;
-        private TextView mIdTextView;
-        private ImageView mPhotoImageView;
-
-        public void bindMachine(Machine machine, int position) {
-            this.mMachine = machine;
-            Log.d(TAG, "showing list.");
-            mNameTextView.setText(machine.getName());
-            mPhotoImageView.setImageDrawable(getActivity().getResources().getDrawable(machine.getImageId()));
-            mIdTextView.setText(machine.getId());
-        }
-
-        public MachineHolder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            mNameTextView = itemView.findViewById(R.id.tv_name);
-            mIdTextView = itemView.findViewById(R.id.tv_id);
-            mPhotoImageView = itemView.findViewById(R.id.iv_photo);
-        }
-
-        @Override
-        public void onClick(View view) {
-
-        }
-    }
-
-    private class MachineAdapter extends RecyclerView.Adapter<MachineHolder> {
-        private List<Machine> mMachineList;
-
-        public MachineAdapter(List<Machine> mMachineList) {
-            this.mMachineList = mMachineList;
-        }
-
-        @Override
-        public MachineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater
-                    .inflate(R.layout.item_grid_machine, parent, false);
-            return new MachineHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(MachineHolder holder, int position) {
-            Machine machine = mMachineList.get(position);
-            holder.bindMachine(machine, position);
-        }
-
-        public void setMachines(List<Machine> machines) {
-            this.mMachineList = machines;
-        }
-
-        @Override
-        public int getItemCount() {
-            return mMachineList == null ? 0 : mMachineList.size();
-        }
-    }
 }

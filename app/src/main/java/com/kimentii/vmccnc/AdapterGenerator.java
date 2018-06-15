@@ -1,10 +1,13 @@
 package com.kimentii.vmccnc;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 
-public interface AdapterGenerator {
+import java.io.Serializable;
+import java.util.List;
 
-    RecyclerView.Adapter<RecyclerView.ViewHolder> getListAdapter();
+public interface AdapterGenerator<T extends AdapterGenerator> extends Serializable {
 
-    RecyclerView.Adapter<RecyclerView.ViewHolder> getGridAdapter();
+    ItemAdapter<T> getListAdapter(Context context, List<T> items);
+
+    ItemAdapter<T> getGridAdapter(Context context, List<T> items);
 }

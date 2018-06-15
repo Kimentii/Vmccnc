@@ -1,13 +1,23 @@
 package com.kimentii.vmccnc.dto;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import org.json.JSONObject;
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ItemAdapter;
+import com.kimentii.vmccnc.ItemHolder;
+import com.kimentii.vmccnc.R;
+import com.kimentii.vmccnc.adapters.AutomaticLineGridAdapter;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class AutomaticLine implements Serializable {
+public class AutomaticLine implements AdapterGenerator<AutomaticLine> {
     private String id;
     private String type_en;
     private String type_ru;
@@ -46,6 +56,16 @@ public class AutomaticLine implements Serializable {
     private String photo3;
     private String description_en;
     private String description_ru;
+
+    @Override
+    public ItemAdapter<AutomaticLine> getListAdapter(Context context, List<AutomaticLine> items) {
+        return null;
+    }
+
+    @Override
+    public ItemAdapter<AutomaticLine> getGridAdapter(Context context, List<AutomaticLine> items) {
+        return new AutomaticLineGridAdapter(context, items);
+    }
 
     public String getId() {
         return id;
