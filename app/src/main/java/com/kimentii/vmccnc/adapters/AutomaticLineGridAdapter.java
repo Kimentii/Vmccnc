@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kimentii.vmccnc.ImageDownloaderAsyncTask;
+import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
@@ -70,7 +72,9 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
             this.mLine = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getCNC_en());
-            mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
+            ImageStorage.setImageFromUrlToImageView(mPhotoImageView,
+                    "http://mzalmasherova.ru/resources/assets/images/products/lathe/1A734F3_1.jpg");
+            //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
             mIdTextView.setText(item.getId());
         }
 
@@ -80,4 +84,3 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
         }
     }
 }
-
