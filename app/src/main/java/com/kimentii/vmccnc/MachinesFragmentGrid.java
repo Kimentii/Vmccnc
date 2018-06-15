@@ -28,7 +28,7 @@ public class MachinesFragmentGrid extends Fragment {
                              final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_machines, container, false);
         Bundle args = getArguments();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rc_machines);
+        mRecyclerView = view.findViewById(R.id.rc_machines);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
                 args.getInt(EXTRA_SPAN_COUNT)));
         ArrayList<Machine> machineArrayList = (ArrayList<Machine>) args.getSerializable(EXTRA_MACHINES_ARRAY_LIST);
@@ -52,7 +52,7 @@ public class MachinesFragmentGrid extends Fragment {
             mMachineAdapter = new MachineAdapter(machineArrayList);
             mRecyclerView.setAdapter(mMachineAdapter);
         } else {
-            mMachineAdapter.setApps(machineArrayList);
+            mMachineAdapter.setMachines(machineArrayList);
             mMachineAdapter.notifyDataSetChanged();
         }
     }
@@ -107,13 +107,13 @@ public class MachinesFragmentGrid extends Fragment {
             holder.bindMachine(machine, position);
         }
 
-        public void setApps(List<Machine> appsList) {
-            this.mMachineList = appsList;
+        public void setMachines(List<Machine> machines) {
+            this.mMachineList = machines;
         }
 
         @Override
         public int getItemCount() {
-            return mMachineList.size();
+            return mMachineList == null ? 0 : mMachineList.size();
         }
     }
 }

@@ -1,6 +1,8 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.dto;
 
-public class Livetool {
+import java.io.Serializable;
+
+public class Livetool implements Serializable {
     private int id;
     private String product_id;
     private String order1;

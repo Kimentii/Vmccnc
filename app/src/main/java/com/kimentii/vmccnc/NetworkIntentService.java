@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.kimentii.vmccnc.dto.AutomaticLine;
 
 import org.json.JSONArray;
 import org.json.JSONException;

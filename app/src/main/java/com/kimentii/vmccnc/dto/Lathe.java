@@ -1,6 +1,8 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.dto;
 
-public class Lathe {
+import java.io.Serializable;
+
+public class Lathe implements Serializable {
     private int id;
     private String productId;
     private String type;

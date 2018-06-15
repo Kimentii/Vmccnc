@@ -1,4 +1,4 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.dto;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

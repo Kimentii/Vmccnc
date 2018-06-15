@@ -21,10 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import com.kimentii.vmccnc.dto.AutomaticLine;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -58,15 +58,12 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("Vertical Machining Centers");
 
         mViewPager = findViewById(R.id.vp_machines);
+
         NetworkIntentService.startActionGetAutomaticLines(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mMachineArrayList = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            mMachineArrayList.add(new Machine());
-        }
 
-        mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
+        //mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
 
         TabLayout tabLayout = findViewById(R.id.tl_dots);
         tabLayout.setupWithViewPager(mViewPager, true);
@@ -209,18 +206,13 @@ public class MainActivity extends AppCompatActivity
             if (bundleData != null) {
                 int dataType = bundleData.getInt(EXTRA_DATA_TYPE);
                 ArrayList<Serializable> data = (ArrayList<Serializable>) bundleData.getSerializable(EXTRA_DATA_ARRAY);
-                switch (dataType) {
-                    case DATA_TYPE_AUTOMATIC_LINE:
-                        for (int i = 0; i < data.size(); i++) {
-                            Log.d(TAG, "onReceive: id: " + ((AutomaticLine) data.get(i)).getId());
-                        }
-                        break;
-                    case DATA_TYPE_LATHE:
-                        break;
-                    case DATA_TYPE_LIVETOOL:
-                        break;
-                    case DATA_TYPE_TUBE:
-                        break;
+                if (data != null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
+                        mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, mMachineArrayList));
+                    } else {
+                        mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
+                    }
                 }
             }
 
