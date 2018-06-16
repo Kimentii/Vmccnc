@@ -18,6 +18,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class AutomaticLine implements AdapterGenerator<AutomaticLine> {
+    public static final String DATABASE_TABLE_NAME = "automated_line";
+    public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+
     private String id;
     private String type_en;
     private String type_ru;

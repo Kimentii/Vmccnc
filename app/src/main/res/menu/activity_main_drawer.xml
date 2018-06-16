@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/category_vertical_machining_centers"
-        android:title="Vertical Machining Centers"/>
+        android:id="@+id/category_automatic_lines"
+        android:title="Automatic Lines" />
     <item
-        android:id="@+id/category_horizontal_machining_centers"
-        android:title="Horizontal Machining Centers"/>
+        android:id="@+id/category_lathes"
+        android:title="Lathes" />
     <item
-        android:id="@+id/category_lathes_cnc"
-        android:title="Lathes CNC"/>
+        android:id="@+id/category_live_tools"
+        android:title="Live tools" />
     <item
-        android:id="@+id/category_oil_gas_industry"
-        android:title="Oil, Gas Industry"/>
-    <item
-        android:id="@+id/category_live_tool"
-        android:title="Live tool"/>
+        android:id="@+id/category_tubes"
+        android:title="Tubes" />
 </menu>

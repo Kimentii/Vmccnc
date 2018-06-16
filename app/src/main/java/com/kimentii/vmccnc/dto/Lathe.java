@@ -1,8 +1,18 @@
 package com.kimentii.vmccnc.dto;
 
-import java.io.Serializable;
+import android.content.Context;
 
-public class Lathe implements Serializable {
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ItemAdapter;
+import com.kimentii.vmccnc.adapters.LatheGridAdapter;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Lathe implements AdapterGenerator<Lathe> {
+    public static final String DATABASE_TABLE_NAME = "lathe";
+    public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+
     private int id;
     private String productId;
     private String type;
@@ -47,6 +57,17 @@ public class Lathe implements Serializable {
     private String descriptionen;
     private String descriptionru;
     private String video1;
+    private String video2;
+
+    @Override
+    public ItemAdapter<Lathe> getListAdapter(Context context, List<Lathe> items) {
+        return null;
+    }
+
+    @Override
+    public ItemAdapter<Lathe> getGridAdapter(Context context, List<Lathe> items) {
+        return new LatheGridAdapter(context, items);
+    }
 
     public int getId() {
         return id;

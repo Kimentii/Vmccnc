@@ -6,21 +6,26 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.kimentii.vmccnc.dto.AutomaticLine;
+import com.kimentii.vmccnc.dto.Lathe;
+import com.kimentii.vmccnc.dto.Livetool;
+import com.kimentii.vmccnc.dto.Tube;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.Serializable;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NetworkIntentService extends IntentService {
     private static final String TAG = NetworkIntentService.class.getSimpleName();
 
-    private static final String ACTION_GET_AUTOMATIC_LINES = "com.kimentii.vmccnc.action.GET_AUTOMATIC_LINES";
-    private static final String ACTION_GET_LATHES = "com.kimentii.vmccnc.action.GET_LATHE";
-    private static final String ACTION_GET_LIVETOOLS = "com.kimentii.vmccnc.action.GET_LIVETOOL";
-    private static final String ACTION_GET_TUBES = "com.kimentii.vmccnc.action.GET_TUBES";
+    private static final String ACTION_UPDATE_DATA = "com.kimentii.vmccnc.action.UPDATE_DATA";
 
     public NetworkIntentService() {
         super("NetworkIntentService");
@@ -28,7 +33,7 @@ public class NetworkIntentService extends IntentService {
 
     public static void startActionGetAutomaticLines(Context context) {
         Intent intent = new Intent(context, NetworkIntentService.class);
-        intent.setAction(ACTION_GET_AUTOMATIC_LINES);
+        intent.setAction(ACTION_UPDATE_DATA);
         context.startService(intent);
     }
 
@@ -42,8 +47,8 @@ public class NetworkIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_GET_AUTOMATIC_LINES.equals(action)) {
-                handleActionGetAutomaticLines();
+            if (ACTION_UPDATE_DATA.equals(action)) {
+                handleActionUpdateData();
             }
         }
     }
@@ -54,39 +59,45 @@ public class NetworkIntentService extends IntentService {
         super.onDestroy();
     }
 
-    private void handleActionGetAutomaticLines() {
+    private void handleActionUpdateData() {
         MySqlHelper mySqlHelper = new MySqlHelper();
+        mySqlHelper.openConnection();
+
         long startTime = System.currentTimeMillis();
-        JSONArray jsonArray = mySqlHelper.executeQuery("SELECT * FROM automated_line");
+        JSONArray automaticLineJsonArray = mySqlHelper.executeQuery(AutomaticLine.DATABASE_TABLE_NAME);
+        JSONArray latheJsonArray = mySqlHelper.executeQuery(Lathe.DATABASE_TABLE_NAME);
+        JSONArray livetoolJsonArray = mySqlHelper.executeQuery(Livetool.DATABASE_TABLE_NAME);
+        JSONArray tubeJsonArray = mySqlHelper.executeQuery(Tube.DATABASE_TABLE_NAME);
         long endTime = System.currentTimeMillis();
-        Log.d(TAG, "handleActionGetAutomaticLines: request time: " + String.valueOf(endTime - startTime));
-        //Log.d(TAG, "Data:\n" + jsonArray.toString());
-        ArrayList<Serializable> automaticLines = new ArrayList<>();
+        Log.d(TAG, "handleActionUpdateData: request time: " + String.valueOf(endTime - startTime));
+
+        mySqlHelper.closeConnection();
+
+        ArrayList<AutomaticLine> automaticLines = getArrayFromJsonArray(automaticLineJsonArray, AutomaticLine.class);
+        //ArrayList<Lathe> lathes = getArrayFromJsonArray(latheJsonArray, Lathe.class);
+        ArrayList<Livetool> livetools = getArrayFromJsonArray(livetoolJsonArray, Livetool.class);
+        ArrayList<Tube> tubes = getArrayFromJsonArray(tubeJsonArray, Tube.class);
+
+        ItemStorage.setAutomaticLines(automaticLines);
+        //ItemStorage.setLathes(lathes);
+        ItemStorage.setLivetools(livetools);
+        ItemStorage.setTubes(tubes);
+
+        MainActivity.notifyDataStorageChanged(NetworkIntentService.this);
+    }
+
+    private <T> ArrayList<T> getArrayFromJsonArray(JSONArray jsonArray, Class<T> tClass) {
+        ArrayList<T> arrayList = new ArrayList<>();
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                //Log.d(TAG, jsonArray.getJSONObject(i).toString());
-                automaticLines.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), AutomaticLine.class));
+                arrayList.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), tClass));
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (NumberFormatException e) {
+                Log.d(TAG, "getArrayFromJsonArray: ");
             }
         }
-        for (int i = 0; i < automaticLines.size(); i++) {
-            Log.d(TAG, "handleActionGetAutomaticLines: " + ((AutomaticLine) automaticLines.get(i)).getId());
-        }
-        MainActivity.sendDataViaBroadcastReceiver(NetworkIntentService.this,
-                MainActivity.DATA_TYPE_AUTOMATIC_LINE, automaticLines);
-    }
-
-    private void handleActionGetLathes() {
-
-    }
-
-    private void handleActionGetLivetools() {
-
-    }
-
-    private void handleActionGetTubes() {
-
+        return arrayList;
     }
 }

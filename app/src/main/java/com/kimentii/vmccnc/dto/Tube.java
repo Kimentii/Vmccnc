@@ -1,8 +1,17 @@
 package com.kimentii.vmccnc.dto;
 
-import java.io.Serializable;
+import android.content.Context;
 
-public class Tube implements Serializable {
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ItemAdapter;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Tube implements AdapterGenerator<Tube> {
+    public static final String DATABASE_TABLE_NAME = "tube";
+    public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+
     private int id;
     private String productId;
     private String type;
@@ -34,6 +43,16 @@ public class Tube implements Serializable {
     private String descriptionru;
     private String video1;
     private String video2;
+
+    @Override
+    public ItemAdapter<Tube> getListAdapter(Context context, List<Tube> items) {
+        return null;
+    }
+
+    @Override
+    public ItemAdapter<Tube> getGridAdapter(Context context, List<Tube> items) {
+        return null;
+    }
 
     public int getId() {
         return id;

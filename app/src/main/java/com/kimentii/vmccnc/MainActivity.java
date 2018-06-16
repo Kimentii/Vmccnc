@@ -22,9 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.kimentii.vmccnc.dto.AutomaticLine;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -35,13 +32,8 @@ public class MainActivity extends AppCompatActivity
     private static final String EXTRA_DATA_ARRAY = "com.kimentii.vmccnc.extra.DATA_ARRAY";
     private static final String EXTRA_DATA_TYPE = "com.kimentii.cmcncc.extra.DATA_TYPE";
 
-    public static final int DATA_TYPE_AUTOMATIC_LINE = 1;
-    public static final int DATA_TYPE_LATHE = 2;
-    public static final int DATA_TYPE_LIVETOOL = 3;
-    public static final int DATA_TYPE_TUBE = 4;
-
     private ViewPager mViewPager;
-    private ArrayList<AdapterGenerator> mMachineArrayList;
+    private MenuItem mSelectedMenuItem;
     private MainActivityBroadCastReceiver mMainActivityBroadCastReceiver;
 
     @Override
@@ -62,8 +54,6 @@ public class MainActivity extends AppCompatActivity
         NetworkIntentService.startActionGetAutomaticLines(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-
-        //mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
 
         TabLayout tabLayout = findViewById(R.id.tl_dots);
         tabLayout.setupWithViewPager(mViewPager, true);
@@ -109,11 +99,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_change_view:
                 Toolbar toolbar = findViewById(R.id.toolbar);
                 if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
-                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, mMachineArrayList));
+                    // TODO replace automatic lines
+                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
                     toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_grid);
                     tabLayout.setVisibility(View.INVISIBLE);
                 } else {
-                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
+                    // TODO replace automatic lines
+                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
                     toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
                     tabLayout.setVisibility(View.VISIBLE);
                 }
@@ -125,21 +117,38 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        Log.d(TAG, "onNavigationItemSelected: ");
+        mSelectedMenuItem = item;
+        ArrayList<? extends AdapterGenerator> data = getSectionData();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private class GridPagerAdapter extends FragmentStatePagerAdapter {
+    private ArrayList<? extends AdapterGenerator> getSectionData() {
+        if (mSelectedMenuItem != null) {
+            switch (mSelectedMenuItem.getItemId()) {
+                case R.id.category_automatic_lines:
+                    return ItemStorage.getAutomaticLines();
+                case R.id.category_lathes:
+                    return ItemStorage.getLathes();
+                // TODO add cases
+            }
+        } else {
+            return ItemStorage.getAutomaticLines();
+        }
+        return null;
+    }
 
-        private ArrayList<AdapterGenerator> mMachineArrayList;
+    private class GridPagerAdapter<T extends AdapterGenerator> extends FragmentStatePagerAdapter {
+
+        private ArrayList<T> mMachineArrayList;
         private int mItemsPerTab;
         private int mColumnsNum;
         private volatile int mTabsNum;
 
-        public GridPagerAdapter(FragmentManager fm, ArrayList<AdapterGenerator> machineArrayList) {
+        public GridPagerAdapter(FragmentManager fm, ArrayList<T> machineArrayList) {
             super(fm);
             // TODO: MainActivity has field with the same name.
             this.mMachineArrayList = machineArrayList;
@@ -172,18 +181,18 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class ListPagerAdapter extends FragmentStatePagerAdapter {
+    private class ListPagerAdapter<T extends AdapterGenerator> extends FragmentStatePagerAdapter {
 
-        private ArrayList<AdapterGenerator> mMachineArrayList;
+        private ArrayList<T> mItemArrayList;
 
-        public ListPagerAdapter(FragmentManager fm, ArrayList<AdapterGenerator> machineArrayList) {
+        public ListPagerAdapter(FragmentManager fm, ArrayList<T> itemArrayList) {
             super(fm);
-            mMachineArrayList = machineArrayList;
+            mItemArrayList = itemArrayList;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return MachinesFragmentList.newInstance(mMachineArrayList);
+            return MachinesFragmentList.newInstance((ArrayList<AdapterGenerator>) mItemArrayList);
         }
 
         @Override
@@ -192,10 +201,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static void sendDataViaBroadcastReceiver(Context context, int dataType, ArrayList<Serializable> data) {
+    public static void notifyDataStorageChanged(Context context) {
         Intent broadcastIntent = new Intent(BROADCAST_FILTER);
-        broadcastIntent.putExtra(EXTRA_DATA_TYPE, dataType);
-        broadcastIntent.putExtra(EXTRA_DATA_ARRAY, data);
         context.sendBroadcast(broadcastIntent);
     }
 
@@ -203,26 +210,14 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundleData = intent.getExtras();
-            if (bundleData != null) {
-                int dataType = bundleData.getInt(EXTRA_DATA_TYPE);
-                ArrayList<Serializable> data = (ArrayList<Serializable>) bundleData.getSerializable(EXTRA_DATA_ARRAY);
-                if (data != null) {
-                    mMachineArrayList = new ArrayList<>();
-                    for (int i = 0; i < data.size(); i++) {
-                        mMachineArrayList.add((AdapterGenerator) data.get(i));
-                    }
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
-                        mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, mMachineArrayList));
-                    } else {
-                        mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, mMachineArrayList));
-                    }
-                } else {
-                    Log.d(TAG, "onReceive: data is NULL!!!!!!!!!!!!");
-                }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
+                // TODO replace automatic lines
+                mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
+            } else {
+                // TODO replace automatic lines
+                mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
             }
-
         }
     }
 }

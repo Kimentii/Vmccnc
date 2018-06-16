@@ -9,57 +9,56 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kimentii.vmccnc.ImageDownloaderAsyncTask;
 import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
-import com.kimentii.vmccnc.dto.AutomaticLine;
+import com.kimentii.vmccnc.dto.Livetool;
 
 import java.util.List;
 
-public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
-    public static final String TAG = AutomaticLineGridAdapter.class.getSimpleName();
+public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
+    public static final String TAG = LivetoolGridAdapter.class.getSimpleName();
 
-    private List<AutomaticLine> mAutomaticLines;
+    private List<Livetool> mLivetools;
     private Context mContext;
 
-    public AutomaticLineGridAdapter(Context context, List<AutomaticLine> items) {
+    public LivetoolGridAdapter(Context context, List<Livetool> items) {
         this.mContext = context;
-        this.mAutomaticLines = items;
+        this.mLivetools = items;
     }
 
     @Override
-    public AutomaticLineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LivetoolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater
                 .inflate(R.layout.item_grid_machine, parent, false);
-        return new AutomaticLineHolder(view);
+        return new LivetoolHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder<AutomaticLine> holder, int position) {
-        AutomaticLine automaticLine = mAutomaticLines.get(position);
-        holder.bindMachine(automaticLine, position);
+    public void onBindViewHolder(@NonNull ItemHolder<Livetool> holder, int position) {
+        Livetool Livetool = mLivetools.get(position);
+        holder.bindMachine(Livetool, position);
     }
 
     @Override
     public int getItemCount() {
-        return mAutomaticLines == null ? 0 : mAutomaticLines.size();
+        return mLivetools == null ? 0 : mLivetools.size();
     }
 
     @Override
-    public void setItems(List<AutomaticLine> items) {
-        this.mAutomaticLines = items;
+    public void setItems(List<Livetool> items) {
+        this.mLivetools = items;
     }
 
-    class AutomaticLineHolder extends ItemHolder<AutomaticLine> implements View.OnClickListener {
-        private AutomaticLine mLine;
+    class LivetoolHolder extends ItemHolder<Livetool> implements View.OnClickListener {
+        private Livetool mLine;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
 
-        public AutomaticLineHolder(View itemView) {
+        public LivetoolHolder(View itemView) {
             super(itemView);
             mNameTextView = itemView.findViewById(R.id.tv_name);
             mIdTextView = itemView.findViewById(R.id.tv_id);
@@ -68,11 +67,12 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
         }
 
         @Override
-        public void bindMachine(AutomaticLine item, int position) {
+        public void bindMachine(Livetool item, int position) {
             this.mLine = item;
             Log.d(TAG, "showing list.");
-            mNameTextView.setText(item.getCNC_en());
-            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, AutomaticLine.IMAGE_FOLDER, item.getPhoto1());
+            mNameTextView.setText(item.getModel_of_machine_cnc());
+            // TODO change photo on real
+            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Livetool.IMAGE_FOLDER, "L200M-OK-DA30-ER20.jpg");
             //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
             mIdTextView.setText(item.getId());
         }

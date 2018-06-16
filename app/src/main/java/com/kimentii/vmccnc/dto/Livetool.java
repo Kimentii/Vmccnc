@@ -1,8 +1,17 @@
 package com.kimentii.vmccnc.dto;
 
-import java.io.Serializable;
+import android.content.Context;
 
-public class Livetool implements Serializable {
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ItemAdapter;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Livetool implements AdapterGenerator<Livetool> {
+    public static final String DATABASE_TABLE_NAME = "livetool";
+    public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+
     private int id;
     private String product_id;
     private String order1;
@@ -37,6 +46,16 @@ public class Livetool implements Serializable {
     private int price;
     private String description_en;
     private String is_sold;
+
+    @Override
+    public ItemAdapter<Livetool> getListAdapter(Context context, List<Livetool> items) {
+        return null;
+    }
+
+    @Override
+    public ItemAdapter<Livetool> getGridAdapter(Context context, List<Livetool> items) {
+        return null;
+    }
 
     public int getId() {
         return id;
