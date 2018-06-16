@@ -6,20 +6,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 import com.kimentii.vmccnc.dto.AutomaticLine;
 import com.kimentii.vmccnc.dto.Lathe;
 import com.kimentii.vmccnc.dto.Livetool;
+import com.kimentii.vmccnc.dto.LivetoolPhoto;
 import com.kimentii.vmccnc.dto.Tube;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class NetworkIntentService extends IntentService {
@@ -64,10 +59,11 @@ public class NetworkIntentService extends IntentService {
         mySqlHelper.openConnection();
 
         long startTime = System.currentTimeMillis();
-        JSONArray automaticLineJsonArray = mySqlHelper.executeQuery(AutomaticLine.DATABASE_TABLE_NAME);
-        JSONArray latheJsonArray = mySqlHelper.executeQuery(Lathe.DATABASE_TABLE_NAME);
-        JSONArray livetoolJsonArray = mySqlHelper.executeQuery(Livetool.DATABASE_TABLE_NAME);
-        JSONArray tubeJsonArray = mySqlHelper.executeQuery(Tube.DATABASE_TABLE_NAME);
+        JSONArray automaticLineJsonArray = mySqlHelper.getTableData(AutomaticLine.DATABASE_TABLE_NAME);
+        JSONArray latheJsonArray = mySqlHelper.getTableData(Lathe.DATABASE_TABLE_NAME);
+        JSONArray livetoolJsonArray = mySqlHelper.getTableData(Livetool.DATABASE_TABLE_NAME);
+        JSONArray tubeJsonArray = mySqlHelper.getTableData(Tube.DATABASE_TABLE_NAME);
+        JSONArray livetoolPhotosJsonArray = mySqlHelper.getTableData(LivetoolPhoto.DATABASE_TABLE_NAME);
         long endTime = System.currentTimeMillis();
         Log.d(TAG, "handleActionUpdateData: request time: " + String.valueOf(endTime - startTime));
 
@@ -77,6 +73,15 @@ public class NetworkIntentService extends IntentService {
         //ArrayList<Lathe> lathes = getArrayFromJsonArray(latheJsonArray, Lathe.class);
         ArrayList<Livetool> livetools = getArrayFromJsonArray(livetoolJsonArray, Livetool.class);
         ArrayList<Tube> tubes = getArrayFromJsonArray(tubeJsonArray, Tube.class);
+        ArrayList<LivetoolPhoto> livetoolPhotos = getArrayFromJsonArray(livetoolPhotosJsonArray, LivetoolPhoto.class);
+        for (LivetoolPhoto livetoolPhoto : livetoolPhotos) {
+            for (Livetool livetool : livetools) {
+                if (livetool.getId() == livetoolPhoto.getLivetool_id()) {
+                    livetool.addPhotoName(livetoolPhoto.getPhoto_name());
+                    break;
+                }
+            }
+        }
 
         ItemStorage.setAutomaticLines(automaticLines);
         //ItemStorage.setLathes(lathes);

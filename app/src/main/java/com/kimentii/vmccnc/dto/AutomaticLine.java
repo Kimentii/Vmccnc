@@ -19,7 +19,7 @@ import java.util.List;
 
 public class AutomaticLine implements AdapterGenerator<AutomaticLine> {
     public static final String DATABASE_TABLE_NAME = "automated_line";
-    public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+    public static final String IMAGE_FOLDER = "automated_lines";
 
     private String id;
     private String type_en;

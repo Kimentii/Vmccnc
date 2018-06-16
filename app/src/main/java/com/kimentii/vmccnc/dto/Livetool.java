@@ -4,13 +4,18 @@ import android.content.Context;
 
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ItemAdapter;
+import com.kimentii.vmccnc.adapters.LivetoolGridAdapter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Livetool implements AdapterGenerator<Livetool> {
     public static final String DATABASE_TABLE_NAME = "livetool";
     public static final String IMAGE_FOLDER = DATABASE_TABLE_NAME;
+
+    // those fields will not be initialized from gson
+    private ArrayList<String> photoNames = new ArrayList<>();
 
     private int id;
     private String product_id;
@@ -54,7 +59,15 @@ public class Livetool implements AdapterGenerator<Livetool> {
 
     @Override
     public ItemAdapter<Livetool> getGridAdapter(Context context, List<Livetool> items) {
-        return null;
+        return new LivetoolGridAdapter(context, items);
+    }
+
+    public void addPhotoName(String photoName) {
+        photoNames.add(photoName);
+    }
+
+    public ArrayList<String> getPhotoNames() {
+        return photoNames;
     }
 
     public int getId() {

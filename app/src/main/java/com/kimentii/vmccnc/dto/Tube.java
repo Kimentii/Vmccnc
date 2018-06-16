@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ItemAdapter;
+import com.kimentii.vmccnc.adapters.TubeGridAdapter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Tube implements AdapterGenerator<Tube> {
 
     @Override
     public ItemAdapter<Tube> getGridAdapter(Context context, List<Tube> items) {
-        return null;
+        return new TubeGridAdapter(context, items);
     }
 
     public int getId() {

@@ -73,7 +73,7 @@ public class TubeGridAdapter extends ItemAdapter<Tube> {
             mNameTextView.setText(item.getFullSystemCNC());
             ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Tube.IMAGE_FOLDER, item.getPhoto1());
             //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
-            mIdTextView.setText(item.getId());
+            mIdTextView.setText(item.getDetail());
         }
 
         @Override

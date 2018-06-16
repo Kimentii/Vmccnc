@@ -72,9 +72,9 @@ public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getModel_of_machine_cnc());
             // TODO change photo on real
-            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Livetool.IMAGE_FOLDER, "L200M-OK-DA30-ER20.jpg");
+            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Livetool.IMAGE_FOLDER, item.getPhotoNames().get(0));
             //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
-            mIdTextView.setText(item.getId());
+            mIdTextView.setText(item.getModel_of_machine_cnc());
         }
 
         @Override

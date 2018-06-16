@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -116,11 +117,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onNavigationItemSelected: ");
         mSelectedMenuItem = item;
-        ArrayList<? extends AdapterGenerator> data = getSectionData();
 
+        ArrayList<? extends AdapterGenerator> data = getSectionData();
+        updateSectionData(getSectionData());
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        switch (item.getItemId()) {
+            case R.id.category_automatic_lines:
+                toolbar.setTitle("Automatic lines");
+                break;
+            case R.id.category_lathes:
+                toolbar.setTitle("Lathes");
+                break;
+            case R.id.category_live_tools:
+                toolbar.setTitle("Live tools");
+                break;
+            case R.id.category_tubes:
+                toolbar.setTitle("Tubes");
+                break;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -133,12 +151,25 @@ public class MainActivity extends AppCompatActivity
                     return ItemStorage.getAutomaticLines();
                 case R.id.category_lathes:
                     return ItemStorage.getLathes();
-                // TODO add cases
+                case R.id.category_live_tools:
+                    return ItemStorage.getLivetools();
+                case R.id.category_tubes:
+                    return ItemStorage.getTubes();
             }
         } else {
             return ItemStorage.getAutomaticLines();
         }
         return null;
+    }
+
+    private <T extends AdapterGenerator> void updateSectionData(ArrayList<T> adapterGenerators) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Log.d(TAG, "updateSectionData: data size: " + adapterGenerators.size());
+        if (mViewPager.getAdapter() instanceof ListPagerAdapter) {
+            mViewPager.setAdapter(new ListPagerAdapter<>(fragmentManager, adapterGenerators));
+        } else {
+            mViewPager.setAdapter(new GridPagerAdapter<>(fragmentManager, adapterGenerators));
+        }
     }
 
     private class GridPagerAdapter<T extends AdapterGenerator> extends FragmentStatePagerAdapter {
@@ -210,14 +241,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
-                // TODO replace automatic lines
-                mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
-            } else {
-                // TODO replace automatic lines
-                mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
-            }
+            updateSectionData(getSectionData());
         }
     }
 }
