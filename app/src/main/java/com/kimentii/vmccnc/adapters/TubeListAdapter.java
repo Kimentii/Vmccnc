@@ -13,52 +13,52 @@ import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
-import com.kimentii.vmccnc.dto.Livetool;
+import com.kimentii.vmccnc.dto.Tube;
 
 import java.util.List;
 
-public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
-    public static final String TAG = LivetoolGridAdapter.class.getSimpleName();
+public class TubeListAdapter extends ItemAdapter<Tube> {
+    public static final String TAG = TubeGridAdapter.class.getSimpleName();
 
-    private List<Livetool> mLivetools;
+    private List<Tube> mTubes;
     private Context mContext;
 
-    public LivetoolGridAdapter(Context context, List<Livetool> items) {
+    public TubeListAdapter(Context context, List<Tube> items) {
         this.mContext = context;
-        this.mLivetools = items;
+        this.mTubes = items;
     }
 
     @Override
-    public LivetoolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TubeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater
-                .inflate(R.layout.item_grid_machine, parent, false);
-        return new LivetoolHolder(view);
+                .inflate(R.layout.item_list_machine, parent, false);
+        return new TubeHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder<Livetool> holder, int position) {
-        Livetool Livetool = mLivetools.get(position);
-        holder.bindMachine(Livetool, position);
+    public void onBindViewHolder(@NonNull ItemHolder<Tube> holder, int position) {
+        Tube Tube = mTubes.get(position);
+        holder.bindMachine(Tube, position);
     }
 
     @Override
     public int getItemCount() {
-        return mLivetools == null ? 0 : mLivetools.size();
+        return mTubes == null ? 0 : mTubes.size();
     }
 
     @Override
-    public void setItems(List<Livetool> items) {
-        this.mLivetools = items;
+    public void setItems(List<Tube> items) {
+        this.mTubes = items;
     }
 
-    class LivetoolHolder extends ItemHolder<Livetool> implements View.OnClickListener {
-        private Livetool mLine;
+    class TubeHolder extends ItemHolder<Tube> implements View.OnClickListener {
+        private Tube mLine;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
 
-        public LivetoolHolder(View itemView) {
+        public TubeHolder(View itemView) {
             super(itemView);
             mNameTextView = itemView.findViewById(R.id.tv_name);
             mIdTextView = itemView.findViewById(R.id.tv_id);
@@ -67,12 +67,13 @@ public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
         }
 
         @Override
-        public void bindMachine(Livetool item, int position) {
+        public void bindMachine(Tube item, int position) {
             this.mLine = item;
             Log.d(TAG, "showing list.");
-            mNameTextView.setText(item.getModel_of_machine_cnc());
-            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Livetool.IMAGE_FOLDER, item.getPhotoNames().get(0));
-            mIdTextView.setText(item.getModel_of_machine_cnc());
+            mNameTextView.setText(item.getFullSystemCNC());
+            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Tube.IMAGE_FOLDER, item.getPhoto1());
+            //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
+            mIdTextView.setText(item.getDetail());
         }
 
         @Override

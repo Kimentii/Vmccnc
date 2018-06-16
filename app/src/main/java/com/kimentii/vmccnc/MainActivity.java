@@ -99,14 +99,13 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_change_view:
                 Toolbar toolbar = findViewById(R.id.toolbar);
+                ArrayList<? extends AdapterGenerator> data = getSectionData();
                 if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
-                    // TODO replace automatic lines
-                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
+                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, data));
                     toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_grid);
                     tabLayout.setVisibility(View.INVISIBLE);
                 } else {
-                    // TODO replace automatic lines
-                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, ItemStorage.getAutomaticLines()));
+                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, data));
                     toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
                     tabLayout.setVisibility(View.VISIBLE);
                 }
@@ -181,7 +180,6 @@ public class MainActivity extends AppCompatActivity
 
         public GridPagerAdapter(FragmentManager fm, ArrayList<T> machineArrayList) {
             super(fm);
-            // TODO: MainActivity has field with the same name.
             this.mMachineArrayList = machineArrayList;
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
             float dpHeight = displayMetrics.heightPixels / displayMetrics.density;

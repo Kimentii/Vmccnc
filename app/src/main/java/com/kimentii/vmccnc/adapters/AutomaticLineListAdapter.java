@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kimentii.vmccnc.ImageDownloaderAsyncTask;
 import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
@@ -18,13 +17,13 @@ import com.kimentii.vmccnc.dto.AutomaticLine;
 
 import java.util.List;
 
-public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
+public class AutomaticLineListAdapter extends ItemAdapter<AutomaticLine> {
     public static final String TAG = AutomaticLineGridAdapter.class.getSimpleName();
 
     private List<AutomaticLine> mAutomaticLines;
     private Context mContext;
 
-    public AutomaticLineGridAdapter(Context context, List<AutomaticLine> items) {
+    public AutomaticLineListAdapter(Context context, List<AutomaticLine> items) {
         this.mContext = context;
         this.mAutomaticLines = items;
     }
@@ -33,7 +32,7 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
     public AutomaticLineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater
-                .inflate(R.layout.item_grid_machine, parent, false);
+                .inflate(R.layout.item_list_machine, parent, false);
         return new AutomaticLineHolder(view);
     }
 

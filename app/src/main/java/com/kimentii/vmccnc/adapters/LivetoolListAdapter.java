@@ -17,13 +17,13 @@ import com.kimentii.vmccnc.dto.Livetool;
 
 import java.util.List;
 
-public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
+public class LivetoolListAdapter extends ItemAdapter<Livetool> {
     public static final String TAG = LivetoolGridAdapter.class.getSimpleName();
 
     private List<Livetool> mLivetools;
     private Context mContext;
 
-    public LivetoolGridAdapter(Context context, List<Livetool> items) {
+    public LivetoolListAdapter(Context context, List<Livetool> items) {
         this.mContext = context;
         this.mLivetools = items;
     }
@@ -32,7 +32,7 @@ public class LivetoolGridAdapter extends ItemAdapter<Livetool> {
     public LivetoolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater
-                .inflate(R.layout.item_grid_machine, parent, false);
+                .inflate(R.layout.item_list_machine, parent, false);
         return new LivetoolHolder(view);
     }
 

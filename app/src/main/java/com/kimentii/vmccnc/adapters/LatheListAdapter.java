@@ -9,38 +9,37 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kimentii.vmccnc.ImageDownloaderAsyncTask;
 import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
-import com.kimentii.vmccnc.dto.AutomaticLine;
+import com.kimentii.vmccnc.dto.Lathe;
 
 import java.util.List;
 
-public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
-    public static final String TAG = AutomaticLineGridAdapter.class.getSimpleName();
+public class LatheListAdapter extends ItemAdapter<Lathe> {
+    public static final String TAG = LatheGridAdapter.class.getSimpleName();
 
-    private List<AutomaticLine> mAutomaticLines;
+    private List<Lathe> mAutomaticLines;
     private Context mContext;
 
-    public AutomaticLineGridAdapter(Context context, List<AutomaticLine> items) {
+    public LatheListAdapter(Context context, List<Lathe> items) {
         this.mContext = context;
         this.mAutomaticLines = items;
     }
 
     @Override
-    public AutomaticLineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LatheHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater
-                .inflate(R.layout.item_grid_machine, parent, false);
-        return new AutomaticLineHolder(view);
+                .inflate(R.layout.item_list_machine, parent, false);
+        return new LatheHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder<AutomaticLine> holder, int position) {
-        AutomaticLine automaticLine = mAutomaticLines.get(position);
-        holder.bindMachine(automaticLine, position);
+    public void onBindViewHolder(@NonNull ItemHolder<Lathe> holder, int position) {
+        Lathe lathe = mAutomaticLines.get(position);
+        holder.bindMachine(lathe, position);
     }
 
     @Override
@@ -49,17 +48,17 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
     }
 
     @Override
-    public void setItems(List<AutomaticLine> items) {
+    public void setItems(List<Lathe> items) {
         this.mAutomaticLines = items;
     }
 
-    class AutomaticLineHolder extends ItemHolder<AutomaticLine> implements View.OnClickListener {
-        private AutomaticLine mLine;
+    class LatheHolder extends ItemHolder<Lathe> implements View.OnClickListener {
+        private Lathe mLathe;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
 
-        public AutomaticLineHolder(View itemView) {
+        public LatheHolder(View itemView) {
             super(itemView);
             mNameTextView = itemView.findViewById(R.id.tv_name);
             mIdTextView = itemView.findViewById(R.id.tv_id);
@@ -68,18 +67,18 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
         }
 
         @Override
-        public void bindMachine(AutomaticLine item, int position) {
-            this.mLine = item;
+        public void bindMachine(Lathe item, int position) {
+            this.mLathe = item;
             Log.d(TAG, "showing list.");
-            mNameTextView.setText(item.getCNC_en());
-            ImageStorage.setImageFromUrlToImageView(mPhotoImageView,
-                    AutomaticLine.IMAGE_FOLDER, item.getPhoto1());
+            mNameTextView.setText(item.getModel());
+            ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Lathe.IMAGE_FOLDER, item.getPhoto1());
+            //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
             mIdTextView.setText(item.getId());
         }
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLine.getId());
+            Log.d(TAG, "onClick: Line id: " + mLathe.getId());
         }
     }
 }

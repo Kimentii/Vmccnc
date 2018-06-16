@@ -5,6 +5,7 @@ import android.content.Context;
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.adapters.LivetoolGridAdapter;
+import com.kimentii.vmccnc.adapters.LivetoolListAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class Livetool implements AdapterGenerator<Livetool> {
 
     @Override
     public ItemAdapter<Livetool> getListAdapter(Context context, List<Livetool> items) {
-        return null;
+        return new LivetoolListAdapter(context, items);
     }
 
     @Override

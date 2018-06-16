@@ -13,6 +13,7 @@ import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
 import com.kimentii.vmccnc.adapters.AutomaticLineGridAdapter;
+import com.kimentii.vmccnc.adapters.AutomaticLineListAdapter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -62,7 +63,7 @@ public class AutomaticLine implements AdapterGenerator<AutomaticLine> {
 
     @Override
     public ItemAdapter<AutomaticLine> getListAdapter(Context context, List<AutomaticLine> items) {
-        return null;
+        return new AutomaticLineListAdapter(context, items);
     }
 
     @Override

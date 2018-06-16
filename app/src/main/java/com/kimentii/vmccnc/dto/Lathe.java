@@ -5,6 +5,7 @@ import android.content.Context;
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.adapters.LatheGridAdapter;
+import com.kimentii.vmccnc.adapters.LatheListAdapter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -61,7 +62,7 @@ public class Lathe implements AdapterGenerator<Lathe> {
 
     @Override
     public ItemAdapter<Lathe> getListAdapter(Context context, List<Lathe> items) {
-        return null;
+        return new LatheListAdapter(context, items);
     }
 
     @Override
