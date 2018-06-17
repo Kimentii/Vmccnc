@@ -68,7 +68,12 @@ public class MySqlHelper {
                     while (resultSet.next()) {
                         JSONObject rowObject = new JSONObject();
                         for (int i = 1; i <= columnCount; i++) {
-                            rowObject.put(resultSet.getMetaData().getColumnName(i), (resultSet.getString(i) != null) ? resultSet.getString(i) : "");
+                            // TODO fix this if
+                            if (resultSet.getMetaData().getColumnName(i).equals("axisCount")) {
+                                rowObject.put(resultSet.getMetaData().getColumnName(i), (resultSet.getString(i) != null) ? resultSet.getString(i) : "2");
+                            } else {
+                                rowObject.put(resultSet.getMetaData().getColumnName(i), (resultSet.getString(i) != null) ? resultSet.getString(i) : "");
+                            }
                         }
                         jsonArray.put(rowObject);
                     }

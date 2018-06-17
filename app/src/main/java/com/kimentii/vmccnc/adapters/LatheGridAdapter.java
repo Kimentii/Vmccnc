@@ -73,7 +73,7 @@ public class LatheGridAdapter extends ItemAdapter<Lathe> {
             mNameTextView.setText(item.getModel());
             ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Lathe.IMAGE_FOLDER, item.getPhoto1());
             //mPhotoImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.machine1));
-            mIdTextView.setText(item.getId());
+            mIdTextView.setText(item.getModel());
         }
 
         @Override

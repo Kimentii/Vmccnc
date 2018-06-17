@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.kimentii.vmccnc.dto.AutomaticLine;
 import com.kimentii.vmccnc.dto.Lathe;
 import com.kimentii.vmccnc.dto.Livetool;
@@ -26,7 +27,7 @@ public class NetworkIntentService extends IntentService {
         super("NetworkIntentService");
     }
 
-    public static void startActionGetAutomaticLines(Context context) {
+    public static void startActionUpdateData(Context context) {
         Intent intent = new Intent(context, NetworkIntentService.class);
         intent.setAction(ACTION_UPDATE_DATA);
         context.startService(intent);
@@ -70,7 +71,7 @@ public class NetworkIntentService extends IntentService {
         mySqlHelper.closeConnection();
 
         ArrayList<AutomaticLine> automaticLines = getArrayFromJsonArray(automaticLineJsonArray, AutomaticLine.class);
-        //ArrayList<Lathe> lathes = getArrayFromJsonArray(latheJsonArray, Lathe.class);
+        ArrayList<Lathe> lathes = getArrayFromJsonArray(latheJsonArray, Lathe.class);
         ArrayList<Livetool> livetools = getArrayFromJsonArray(livetoolJsonArray, Livetool.class);
         ArrayList<Tube> tubes = getArrayFromJsonArray(tubeJsonArray, Tube.class);
         ArrayList<LivetoolPhoto> livetoolPhotos = getArrayFromJsonArray(livetoolPhotosJsonArray, LivetoolPhoto.class);
@@ -84,7 +85,7 @@ public class NetworkIntentService extends IntentService {
         }
 
         ItemStorage.setAutomaticLines(automaticLines);
-        //ItemStorage.setLathes(lathes);
+        ItemStorage.setLathes(lathes);
         ItemStorage.setLivetools(livetools);
         ItemStorage.setTubes(tubes);
 
@@ -99,8 +100,8 @@ public class NetworkIntentService extends IntentService {
                 arrayList.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), tClass));
             } catch (JSONException e) {
                 e.printStackTrace();
-            } catch (NumberFormatException e) {
-                Log.d(TAG, "getArrayFromJsonArray: ");
+            } catch (JsonSyntaxException e) {
+                Log.d(TAG, "getArrayFromJsonArray: JsonSyntaxException!!!!!");
             }
         }
         return arrayList;

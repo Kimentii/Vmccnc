@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     private ViewPager mViewPager;
     private MenuItem mSelectedMenuItem;
+    private boolean areClicksEnabled;
     private MainActivityBroadCastReceiver mMainActivityBroadCastReceiver;
 
     @Override
@@ -48,21 +49,23 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Vertical Machining Centers");
 
         mViewPager = findViewById(R.id.vp_machines);
 
-        NetworkIntentService.startActionGetAutomaticLines(this);
+        NetworkIntentService.startActionUpdateData(this);
+        disableEventListeners();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+        mViewPager.setAdapter(new SingleFragmentPagerAdapter(getSupportFragmentManager(),
+                InformationFragment.newInstance(R.layout.fragment_loading)));
 
         TabLayout tabLayout = findViewById(R.id.tl_dots);
         tabLayout.setupWithViewPager(mViewPager, true);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -93,23 +96,25 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final TabLayout tabLayout = findViewById(R.id.tl_dots);
-        switch (id) {
-            case R.id.action_change_view:
-                Toolbar toolbar = findViewById(R.id.toolbar);
-                ArrayList<? extends AdapterGenerator> data = getSectionData();
-                if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
-                    mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, data));
-                    toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_grid);
-                    tabLayout.setVisibility(View.INVISIBLE);
-                } else {
-                    mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, data));
-                    toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
-                    tabLayout.setVisibility(View.VISIBLE);
-                }
-                break;
+        if (areClicksEnabled) {
+            int id = item.getItemId();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            final TabLayout tabLayout = findViewById(R.id.tl_dots);
+            switch (id) {
+                case R.id.action_change_view:
+                    Toolbar toolbar = findViewById(R.id.toolbar);
+                    ArrayList<? extends AdapterGenerator> data = getSectionData();
+                    if (mViewPager.getAdapter() instanceof GridPagerAdapter) {
+                        mViewPager.setAdapter(new ListPagerAdapter(fragmentManager, data));
+                        toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_grid);
+                        tabLayout.setVisibility(View.INVISIBLE);
+                    } else {
+                        mViewPager.setAdapter(new GridPagerAdapter(fragmentManager, data));
+                        toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
+                        tabLayout.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -118,29 +123,39 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onNavigationItemSelected: ");
-        mSelectedMenuItem = item;
+        if (areClicksEnabled) {
+            mSelectedMenuItem = item;
 
-        ArrayList<? extends AdapterGenerator> data = getSectionData();
-        updateSectionData(getSectionData());
+            ArrayList<? extends AdapterGenerator> data = getSectionData();
+            updateSectionData(getSectionData());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        switch (item.getItemId()) {
-            case R.id.category_automatic_lines:
-                toolbar.setTitle("Automatic lines");
-                break;
-            case R.id.category_lathes:
-                toolbar.setTitle("Lathes");
-                break;
-            case R.id.category_live_tools:
-                toolbar.setTitle("Live tools");
-                break;
-            case R.id.category_tubes:
-                toolbar.setTitle("Tubes");
-                break;
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            switch (item.getItemId()) {
+                case R.id.category_automatic_lines:
+                    toolbar.setTitle("Automatic lines");
+                    break;
+                case R.id.category_lathes:
+                    toolbar.setTitle("Lathes");
+                    break;
+                case R.id.category_live_tools:
+                    toolbar.setTitle("Live tools");
+                    break;
+                case R.id.category_tubes:
+                    toolbar.setTitle("Tubes");
+                    break;
+            }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void disableEventListeners() {
+        areClicksEnabled = false;
+    }
+
+    private void enableEventListeners() {
+        areClicksEnabled = true;
     }
 
     private ArrayList<? extends AdapterGenerator> getSectionData() {
@@ -230,6 +245,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private class SingleFragmentPagerAdapter extends FragmentStatePagerAdapter {
+
+        Fragment mFragment;
+
+        public SingleFragmentPagerAdapter(FragmentManager fm, Fragment fragment) {
+            super(fm);
+            mFragment = fragment;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    }
+
     public static void notifyDataStorageChanged(Context context) {
         Intent broadcastIntent = new Intent(BROADCAST_FILTER);
         context.sendBroadcast(broadcastIntent);
@@ -240,6 +275,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             updateSectionData(getSectionData());
+            enableEventListeners();
         }
     }
 }
