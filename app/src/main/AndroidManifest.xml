@@ -22,9 +22,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AutomaticLineActivity" />
+
         <service
             android:name=".NetworkIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>

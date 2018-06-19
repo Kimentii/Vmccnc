@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kimentii.vmccnc.ImageDownloaderAsyncTask;
+import com.kimentii.vmccnc.AutomaticLineActivity;
 import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
@@ -54,7 +55,7 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
     }
 
     class AutomaticLineHolder extends ItemHolder<AutomaticLine> implements View.OnClickListener {
-        private AutomaticLine mLine;
+        private AutomaticLine mAutomaticLine;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
@@ -69,7 +70,7 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
 
         @Override
         public void bindMachine(AutomaticLine item, int position) {
-            this.mLine = item;
+            this.mAutomaticLine = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getCNC_en());
             ImageStorage.setImageFromUrlToImageView(mPhotoImageView,
@@ -79,7 +80,8 @@ public class AutomaticLineGridAdapter extends ItemAdapter<AutomaticLine> {
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLine.getId());
+            Intent intent = AutomaticLineActivity.getStartIntent(mContext, mAutomaticLine);
+            mContext.startActivity(intent);
         }
     }
 }
