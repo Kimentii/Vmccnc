@@ -1,4 +1,4 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ImageStorage;
+import com.kimentii.vmccnc.ItemStorage;
+import com.kimentii.vmccnc.R;
 import com.kimentii.vmccnc.dto.AutomaticLine;
 
 public class AutomaticLineActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = AutomaticLineActivity.class.getSimpleName();
-    private static final String EXTRA_ADAPTER_GENERATOR = "com.kimentii.vmccnc.AutomaticLineActivity.extra.ADAPTER_GENERATOR";
+    private static final String EXTRA_ADAPTER_GENERATOR = "com.kimentii.vmccnc.activities.AutomaticLineActivity.extra.ADAPTER_GENERATOR";
 
     private ImageView mPhotoImageView;
     private TextView mTypeTextView;
@@ -60,12 +64,6 @@ public class AutomaticLineActivity extends AppCompatActivity implements View.OnC
         mSizeTextView.setText(String.format(getString(R.string.two_dimensional_size), String.valueOf(mAutomaticLine.getLine_width()),
                 String.valueOf(mAutomaticLine.getLine_hight())));
 
-    }
-
-    public static Intent getStartIntent(Context context, AdapterGenerator adapterGenerator) {
-        Intent intent = new Intent(context, AutomaticLineActivity.class);
-        intent.putExtra(EXTRA_ADAPTER_GENERATOR, adapterGenerator);
-        return intent;
     }
 
     @Override

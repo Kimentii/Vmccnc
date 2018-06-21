@@ -1,16 +1,15 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.activities;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import com.kimentii.vmccnc.ItemStorage;
+import com.kimentii.vmccnc.R;
 
 public class CartActivity extends AppCompatActivity {
 

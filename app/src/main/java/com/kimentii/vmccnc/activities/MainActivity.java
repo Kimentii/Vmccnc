@@ -1,4 +1,4 @@
-package com.kimentii.vmccnc;
+package com.kimentii.vmccnc.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,13 +23,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.InformationFragment;
+import com.kimentii.vmccnc.ItemStorage;
+import com.kimentii.vmccnc.MachinesFragmentGrid;
+import com.kimentii.vmccnc.MachinesFragmentList;
+import com.kimentii.vmccnc.NetworkIntentService;
+import com.kimentii.vmccnc.R;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String BROADCAST_FILTER = "com.kimentii.vmccnc.MainActivity";
+    private static final String BROADCAST_FILTER = "com.kimentii.vmccnc.activities.MainActivity";
     private static final String EXTRA_DATA_ARRAY = "com.kimentii.vmccnc.extra.DATA_ARRAY";
     private static final String EXTRA_DATA_TYPE = "com.kimentii.cmcncc.extra.DATA_TYPE";
 

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.kimentii.vmccnc.activities.MainActivity;
 import com.kimentii.vmccnc.dto.AutomaticLine;
 import com.kimentii.vmccnc.dto.Lathe;
 import com.kimentii.vmccnc.dto.Livetool;

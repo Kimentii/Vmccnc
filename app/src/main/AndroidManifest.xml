@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,8 +22,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AutomaticLineActivity" />
-        <activity android:name=".CartActivity" />
+        <activity android:name=".activities.AutomaticLineActivity" />
+        <activity android:name=".activities.CartActivity" />
+        <activity android:name=".activities.LatheActivity" />
+        <activity android:name=".activities.LivetoolActivity" />
+        <activity android:name=".activities.TubeActivity" />
 
         <service
             android:name=".NetworkIntentService"
