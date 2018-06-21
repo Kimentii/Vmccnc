@@ -1,9 +1,15 @@
 package com.kimentii.vmccnc.dto;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
+import com.kimentii.vmccnc.R;
 import com.kimentii.vmccnc.adapters.LivetoolGridAdapter;
 import com.kimentii.vmccnc.adapters.LivetoolListAdapter;
 
@@ -61,6 +67,20 @@ public class Livetool implements AdapterGenerator<Livetool> {
     @Override
     public ItemAdapter<Livetool> getGridAdapter(Context context, List<Livetool> items) {
         return new LivetoolGridAdapter(context, items);
+    }
+
+    @Override
+    public View getCartView(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_cart, null, false);
+        ImageView photo = view.findViewById(R.id.iv_photo);
+        TextView id = view.findViewById(R.id.tv_id);
+        TextView name = view.findViewById(R.id.tv_name);
+
+        ImageStorage.setImageFromUrlToImageView(photo, AutomaticLine.IMAGE_FOLDER, getPhotoNames().get(0));
+        id.setText(getProduct_id());
+        name.setText(getModel_of_machine_cnc());
+        return view;
     }
 
     public void addPhotoName(String photoName) {

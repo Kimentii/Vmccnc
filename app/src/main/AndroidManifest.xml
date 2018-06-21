@@ -23,6 +23,7 @@
         </activity>
 
         <activity android:name=".AutomaticLineActivity" />
+        <activity android:name=".CartActivity" />
 
         <service
             android:name=".NetworkIntentService"

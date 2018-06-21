@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kimentii.vmccnc.dto.AutomaticLine;
 
-public class AutomaticLineActivity extends AppCompatActivity {
+public class AutomaticLineActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = AutomaticLineActivity.class.getSimpleName();
     private static final String EXTRA_ADAPTER_GENERATOR = "com.kimentii.vmccnc.AutomaticLineActivity.extra.ADAPTER_GENERATOR";
 
@@ -24,6 +26,8 @@ public class AutomaticLineActivity extends AppCompatActivity {
     private TextView mWorkpieceWeightTextView;
     private TextView mSizeTextView;
 
+    private AutomaticLine mAutomaticLine;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +36,7 @@ public class AutomaticLineActivity extends AppCompatActivity {
         Intent intent = getIntent();
         AdapterGenerator<AutomaticLine> adapterGenerator = (AdapterGenerator) intent.getExtras()
                 .getSerializable(EXTRA_ADAPTER_GENERATOR);
-        AutomaticLine automaticLine = (AutomaticLine) adapterGenerator;
+        mAutomaticLine = (AutomaticLine) adapterGenerator;
 
         mPhotoImageView = findViewById(R.id.iv_photo);
         mTypeTextView = findViewById(R.id.tv_type);
@@ -45,16 +49,16 @@ public class AutomaticLineActivity extends AppCompatActivity {
         mSizeTextView = findViewById(R.id.tv_size);
 
         ImageStorage.setImageFromUrlToImageView(mPhotoImageView, AutomaticLine.IMAGE_FOLDER,
-                automaticLine.getPhoto1());
-        mTypeTextView.setText(automaticLine.getType_en());
-        mManufacturerTextView.setText(automaticLine.getManufacturer_en());
-        mCountryTextView.setText(automaticLine.getCountry_en());
-        mCncTextView.setText(automaticLine.getCNC_en());
-        mCncFullTextView.setText(automaticLine.getCNC_full_en());
-        mWorkpieceTextView.setText(automaticLine.getWorkpiece_en());
-        mWorkpieceWeightTextView.setText(automaticLine.getWorkpiece_weight());
-        mSizeTextView.setText(String.format(getString(R.string.two_dimensional_size), String.valueOf(automaticLine.getLine_width()),
-                String.valueOf(automaticLine.getLine_hight())));
+                mAutomaticLine.getPhoto1());
+        mTypeTextView.setText(mAutomaticLine.getType_en());
+        mManufacturerTextView.setText(mAutomaticLine.getManufacturer_en());
+        mCountryTextView.setText(mAutomaticLine.getCountry_en());
+        mCncTextView.setText(mAutomaticLine.getCNC_en());
+        mCncFullTextView.setText(mAutomaticLine.getCNC_full_en());
+        mWorkpieceTextView.setText(mAutomaticLine.getWorkpiece_en());
+        mWorkpieceWeightTextView.setText(mAutomaticLine.getWorkpiece_weight());
+        mSizeTextView.setText(String.format(getString(R.string.two_dimensional_size), String.valueOf(mAutomaticLine.getLine_width()),
+                String.valueOf(mAutomaticLine.getLine_hight())));
 
     }
 
@@ -62,5 +66,11 @@ public class AutomaticLineActivity extends AppCompatActivity {
         Intent intent = new Intent(context, AutomaticLineActivity.class);
         intent.putExtra(EXTRA_ADAPTER_GENERATOR, adapterGenerator);
         return intent;
+    }
+
+    @Override
+    public void onClick(View v) {
+        ItemStorage.addToCart(mAutomaticLine);
+        Toast.makeText(this, "Added to cart.", Toast.LENGTH_SHORT).show();
     }
 }

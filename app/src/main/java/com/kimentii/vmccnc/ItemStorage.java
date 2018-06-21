@@ -13,6 +13,7 @@ public class ItemStorage {
     private static ArrayList<Lathe> sLathes;
     private static ArrayList<Livetool> sLivetools;
     private static ArrayList<Tube> sTubes;
+    private static ArrayList<AdapterGenerator> sCart = new ArrayList<>();
 
     public static ArrayList<AutomaticLine> getAutomaticLines() {
         return sAutomaticLines;
@@ -44,5 +45,17 @@ public class ItemStorage {
 
     public static void setTubes(ArrayList<Tube> tubes) {
         sTubes = tubes;
+    }
+
+    public static ArrayList<AdapterGenerator> getCart() {
+        return sCart;
+    }
+
+    public static void addToCart(AdapterGenerator adapterGenerator) {
+        sCart.add(adapterGenerator);
+    }
+
+    public static void deleteFromCart(AdapterGenerator adapterGenerator) {
+        sCart.remove(adapterGenerator);
     }
 }

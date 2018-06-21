@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kimentii.vmccnc.AdapterGenerator;
+import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
@@ -69,6 +70,20 @@ public class AutomaticLine implements AdapterGenerator<AutomaticLine> {
     @Override
     public ItemAdapter<AutomaticLine> getGridAdapter(Context context, List<AutomaticLine> items) {
         return new AutomaticLineGridAdapter(context, items);
+    }
+
+    @Override
+    public View getCartView(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_cart, null, false);
+        ImageView photo = view.findViewById(R.id.iv_photo);
+        TextView id = view.findViewById(R.id.tv_id);
+        TextView name = view.findViewById(R.id.tv_name);
+
+        ImageStorage.setImageFromUrlToImageView(photo, AutomaticLine.IMAGE_FOLDER, getPhoto1());
+        id.setText(getId());
+        name.setText(getCNC_en());
+        return view;
     }
 
     public String getId() {
