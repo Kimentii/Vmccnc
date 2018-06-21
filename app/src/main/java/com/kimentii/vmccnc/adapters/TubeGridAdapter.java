@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
+import com.kimentii.vmccnc.activities.LivetoolActivity;
+import com.kimentii.vmccnc.activities.TubeActivity;
 import com.kimentii.vmccnc.dto.Tube;
 
 import java.util.List;
@@ -39,7 +42,7 @@ public class TubeGridAdapter extends ItemAdapter<Tube> {
     @Override
     public void onBindViewHolder(@NonNull ItemHolder<Tube> holder, int position) {
         Tube Tube = mTubes.get(position);
-        holder.bindMachine(Tube, position);
+        holder.bindItem(Tube, position);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class TubeGridAdapter extends ItemAdapter<Tube> {
     }
 
     class TubeHolder extends ItemHolder<Tube> implements View.OnClickListener {
-        private Tube mLine;
+        private Tube mTube;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
@@ -67,8 +70,8 @@ public class TubeGridAdapter extends ItemAdapter<Tube> {
         }
 
         @Override
-        public void bindMachine(Tube item, int position) {
-            this.mLine = item;
+        public void bindItem(Tube item, int position) {
+            this.mTube = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getFullSystemCNC());
             ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Tube.IMAGE_FOLDER, item.getPhoto1());
@@ -78,7 +81,8 @@ public class TubeGridAdapter extends ItemAdapter<Tube> {
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLine.getId());
+            Intent intent = TubeActivity.getStartIntent(mContext, mTube);
+            mContext.startActivity(intent);
         }
     }
 }

@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.view.ActionMode;
 
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ImageStorage;
@@ -64,11 +66,19 @@ public class AutomaticLineActivity extends AppCompatActivity implements View.OnC
         mSizeTextView.setText(String.format(getString(R.string.two_dimensional_size), String.valueOf(mAutomaticLine.getLine_width()),
                 String.valueOf(mAutomaticLine.getLine_hight())));
 
+        Button addToCartButton = findViewById(R.id.button_add_to_cart);
+        addToCartButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         ItemStorage.addToCart(mAutomaticLine);
         Toast.makeText(this, "Added to cart.", Toast.LENGTH_SHORT).show();
+    }
+
+    public static Intent getStartIntent(Context context, AdapterGenerator adapterGenerator) {
+        Intent intent = new Intent(context, AutomaticLineActivity.class);
+        intent.putExtra(EXTRA_ADAPTER_GENERATOR, adapterGenerator);
+        return intent;
     }
 }

@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
+import com.kimentii.vmccnc.activities.LivetoolActivity;
 import com.kimentii.vmccnc.dto.Livetool;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class LivetoolListAdapter extends ItemAdapter<Livetool> {
     @Override
     public void onBindViewHolder(@NonNull ItemHolder<Livetool> holder, int position) {
         Livetool Livetool = mLivetools.get(position);
-        holder.bindMachine(Livetool, position);
+        holder.bindItem(Livetool, position);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class LivetoolListAdapter extends ItemAdapter<Livetool> {
     }
 
     class LivetoolHolder extends ItemHolder<Livetool> implements View.OnClickListener {
-        private Livetool mLine;
+        private Livetool mLivetool;
         private TextView mNameTextView;
         private TextView mIdTextView;
         private ImageView mPhotoImageView;
@@ -67,8 +69,8 @@ public class LivetoolListAdapter extends ItemAdapter<Livetool> {
         }
 
         @Override
-        public void bindMachine(Livetool item, int position) {
-            this.mLine = item;
+        public void bindItem(Livetool item, int position) {
+            this.mLivetool = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getModel_of_machine_cnc());
             ImageStorage.setImageFromUrlToImageView(mPhotoImageView, Livetool.IMAGE_FOLDER, item.getPhotoNames().get(0));
@@ -77,7 +79,8 @@ public class LivetoolListAdapter extends ItemAdapter<Livetool> {
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLine.getId());
+            Intent intent = LivetoolActivity.getStartIntent(mContext, mLivetool);
+            mContext.startActivity(intent);
         }
     }
 }

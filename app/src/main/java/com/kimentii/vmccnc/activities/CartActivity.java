@@ -1,5 +1,7 @@
 package com.kimentii.vmccnc.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,11 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         mCartListView = findViewById(R.id.lv_cart_items);
         mCartListView.setAdapter(new CartItemsAdapter());
+    }
+
+    public static Intent getStartIntent(Context context) {
+        Intent intent = new Intent(context, CartActivity.class);
+        return intent;
     }
 
     class CartItemsAdapter extends BaseAdapter {

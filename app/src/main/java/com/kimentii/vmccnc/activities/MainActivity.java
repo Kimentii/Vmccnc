@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity
     static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String BROADCAST_FILTER = "com.kimentii.vmccnc.activities.MainActivity";
-    private static final String EXTRA_DATA_ARRAY = "com.kimentii.vmccnc.extra.DATA_ARRAY";
-    private static final String EXTRA_DATA_TYPE = "com.kimentii.cmcncc.extra.DATA_TYPE";
 
     private ViewPager mViewPager;
     private MenuItem mSelectedMenuItem;
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -121,6 +119,10 @@ public class MainActivity extends AppCompatActivity
                         toolbar.getMenu().findItem(R.id.action_change_view).setIcon(R.drawable.ic_view_list);
                         tabLayout.setVisibility(View.VISIBLE);
                     }
+                    break;
+                case R.id.action_show_cart:
+                    Intent intent = CartActivity.getStartIntent(MainActivity.this);
+                    startActivity(intent);
                     break;
             }
         }

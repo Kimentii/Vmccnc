@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">Vmccnc</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_change_view">change_view</string>
     <string name="action_show_cart">show cart</string>
     <string name="action_add_to_cart">Add ot cart</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="title_type">Type:</string>
     <string name="title_manufacturer">Manufacturer:</string>
@@ -18,5 +17,16 @@
     <string name="title_workpiece">Workpiece:</string>
     <string name="title_workpiece_weight">Workpiece Weight:</string>
     <string name="title_size">Size:</string>
+    <string name="title_year">Year:</string>
+    <string name="title_location">Location:</string>
+    <string name="title_max_cutting_diameter">Max Cutting Diameter:</string>
+    <string name="title_cutting_diameter">Cutting Diameter:</string>
+    <string name="title_bar_capacity">Bar Capacity:</string>
+    <string name="title_x_axis">X Axis:</string>
+    <string name="title_z_axis">Z Axis:</string>
+    <string name="title_spindle_speed">Spindle Speed:</string>
+    <string name="title_tools">Tools(All/Live):</string>
+
     <string name="two_dimensional_size">%sx%s</string>
+    <string name="tools_all_live">%s/%s</string>
 </resources>

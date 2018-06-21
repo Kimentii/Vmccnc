@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
+import com.kimentii.vmccnc.activities.AutomaticLineActivity;
+import com.kimentii.vmccnc.activities.LatheActivity;
 import com.kimentii.vmccnc.dto.Lathe;
 
 import java.util.List;
@@ -39,7 +42,7 @@ public class LatheGridAdapter extends ItemAdapter<Lathe> {
     @Override
     public void onBindViewHolder(@NonNull ItemHolder<Lathe> holder, int position) {
         Lathe lathe = mAutomaticLines.get(position);
-        holder.bindMachine(lathe, position);
+        holder.bindItem(lathe, position);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class LatheGridAdapter extends ItemAdapter<Lathe> {
         }
 
         @Override
-        public void bindMachine(Lathe item, int position) {
+        public void bindItem(Lathe item, int position) {
             this.mLathe = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getModel());
@@ -78,7 +81,8 @@ public class LatheGridAdapter extends ItemAdapter<Lathe> {
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLathe.getId());
+            Intent intent = LatheActivity.getStartIntent(mContext, mLathe);
+            mContext.startActivity(intent);
         }
     }
 }

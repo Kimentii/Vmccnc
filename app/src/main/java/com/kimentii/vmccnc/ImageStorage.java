@@ -23,7 +23,9 @@ public class ImageStorage {
             Function<Bitmap, Void> saveFunction = new Function<Bitmap, Void>() {
                 @Override
                 public Void apply(Bitmap image) {
-                    imagePool.put(url, image);
+                    if (image != null) {
+                        imagePool.put(url, image);
+                    }
                     return null;
                 }
             };

@@ -1,6 +1,7 @@
 package com.kimentii.vmccnc.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.kimentii.vmccnc.ImageStorage;
 import com.kimentii.vmccnc.ItemAdapter;
 import com.kimentii.vmccnc.ItemHolder;
 import com.kimentii.vmccnc.R;
+import com.kimentii.vmccnc.activities.AutomaticLineActivity;
 import com.kimentii.vmccnc.dto.AutomaticLine;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class AutomaticLineListAdapter extends ItemAdapter<AutomaticLine> {
     @Override
     public void onBindViewHolder(@NonNull ItemHolder<AutomaticLine> holder, int position) {
         AutomaticLine automaticLine = mAutomaticLines.get(position);
-        holder.bindMachine(automaticLine, position);
+        holder.bindItem(automaticLine, position);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class AutomaticLineListAdapter extends ItemAdapter<AutomaticLine> {
         }
 
         @Override
-        public void bindMachine(AutomaticLine item, int position) {
+        public void bindItem(AutomaticLine item, int position) {
             this.mLine = item;
             Log.d(TAG, "showing list.");
             mNameTextView.setText(item.getCNC_en());
@@ -78,7 +80,8 @@ public class AutomaticLineListAdapter extends ItemAdapter<AutomaticLine> {
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: Line id: " + mLine.getId());
+            Intent intent = AutomaticLineActivity.getStartIntent(mContext, mLine);
+            mContext.startActivity(intent);
         }
     }
 }

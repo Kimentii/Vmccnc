@@ -9,5 +9,5 @@ public abstract class ItemHolder<T extends AdapterGenerator> extends RecyclerVie
         super(itemView);
     }
 
-    public abstract void bindMachine(T item, int position);
+    public abstract void bindItem(T item, int position);
 }
