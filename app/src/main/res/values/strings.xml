@@ -5,6 +5,7 @@
     <string name="action_change_view">change_view</string>
     <string name="action_show_cart">show cart</string>
     <string name="action_add_to_cart">Add ot cart</string>
+    <string name="action_edit_mode">Edit mode</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,7 +40,10 @@
     <string name="title_b">B:</string>
     <string name="title_m1">M1:</string>
     <string name="title_coolant_supply">Coolant Supply:</string>
+    <string name="title_no_internet_connection">No internet connection</string>
 
     <string name="two_dimensional_size">%sx%s</string>
     <string name="tools_all_live">%s/%s</string>
+    <string name="action_delete">Delete selected</string>
+
 </resources>

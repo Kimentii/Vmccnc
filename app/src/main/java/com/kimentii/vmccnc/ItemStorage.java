@@ -47,15 +47,11 @@ public class ItemStorage {
         sTubes = tubes;
     }
 
-    public static ArrayList<AdapterGenerator> getCart() {
+    public static ArrayList<AdapterGenerator> getCartItems() {
         return sCart;
     }
 
     public static void addToCart(AdapterGenerator adapterGenerator) {
         sCart.add(adapterGenerator);
-    }
-
-    public static void deleteFromCart(AdapterGenerator adapterGenerator) {
-        sCart.remove(adapterGenerator);
     }
 }

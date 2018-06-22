@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity
     static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String BROADCAST_FILTER = "com.kimentii.vmccnc.activities.MainActivity";
+    private static final String EXTRA_STATE = "com.kimentii.vmccnc.MainActivity.extras.STATE";
+    private static final int STATE_NO_INTERNET_CONNECTION = 1;
+    private static final int STATE_DATA_UPDATED = 2;
 
     private ViewPager mViewPager;
     private MenuItem mSelectedMenuItem;
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         mMainActivityBroadCastReceiver = new MainActivityBroadCastReceiver();
         registerReceiver(mMainActivityBroadCastReceiver, intentFilter);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mViewPager = findViewById(R.id.vp_machines);
@@ -126,7 +129,6 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -277,6 +279,13 @@ public class MainActivity extends AppCompatActivity
 
     public static void notifyDataStorageChanged(Context context) {
         Intent broadcastIntent = new Intent(BROADCAST_FILTER);
+        broadcastIntent.putExtra(EXTRA_STATE, STATE_DATA_UPDATED);
+        context.sendBroadcast(broadcastIntent);
+    }
+
+    public static void notifyNoIternetConnection(Context context) {
+        Intent broadcastIntent = new Intent(BROADCAST_FILTER);
+        broadcastIntent.putExtra(EXTRA_STATE, STATE_NO_INTERNET_CONNECTION);
         context.sendBroadcast(broadcastIntent);
     }
 
@@ -284,8 +293,17 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateSectionData(getSectionData());
-            enableEventListeners();
+            int state = intent.getIntExtra(EXTRA_STATE, 0);
+            switch (state) {
+                case STATE_DATA_UPDATED:
+                    updateSectionData(getSectionData());
+                    enableEventListeners();
+                    break;
+                case STATE_NO_INTERNET_CONNECTION:
+                    mViewPager.setAdapter(new SingleFragmentPagerAdapter(getSupportFragmentManager(),
+                            InformationFragment.newInstance(R.layout.fragment_no_internet_connection)));
+                    break;
+            }
         }
     }
 }
