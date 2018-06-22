@@ -92,7 +92,6 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (id) {
             case R.id.action_enable_edit_mode:
                 startSupportActionMode(mActionModeCallback);
-                mCartListView.setOnItemClickListener(this);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -121,6 +120,7 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.toolbar_cart_action_mode, menu);
+            mCartListView.setOnItemClickListener(CartActivity.this);
             return true;
         }
 
@@ -144,6 +144,7 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             ((BaseAdapter) mCartListView.getAdapter()).notifyDataSetChanged();
+            mSelectedItems = new ArrayList<>();
             mCartListView.setOnItemClickListener(null);
         }
     }

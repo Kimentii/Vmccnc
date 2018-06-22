@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
         NetworkIntentService.startActionUpdateData(this);
         disableEventListeners();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new SingleFragmentPagerAdapter(getSupportFragmentManager(),
                 InformationFragment.newInstance(R.layout.fragment_loading)));
 

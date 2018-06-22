@@ -5,15 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kimentii.vmccnc.AdapterGenerator;
 import com.kimentii.vmccnc.ImageStorage;
+import com.kimentii.vmccnc.ItemStorage;
 import com.kimentii.vmccnc.R;
 import com.kimentii.vmccnc.dto.Lathe;
 
-public class LatheActivity extends AppCompatActivity {
+public class LatheActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String EXTRA_ADAPTER_GENERATOR = "com.kimentii.vmccnc.activities.LatheActivity.extra.ADAPTER_GENERATOR";
 
     private Lathe mLathe;
@@ -22,6 +26,9 @@ public class LatheActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lathe);
+
+        Button addToCartButton = findViewById(R.id.button_add_to_cart);
+        addToCartButton.setOnClickListener(this);
 
         AdapterGenerator<Lathe> adapterGenerator = (AdapterGenerator<Lathe>) getIntent().getExtras()
                 .getSerializable(EXTRA_ADAPTER_GENERATOR);
@@ -57,6 +64,11 @@ public class LatheActivity extends AppCompatActivity {
         ImageStorage.setImageFromUrlToImageView(imageView, Lathe.IMAGE_FOLDER, mLathe.getPhoto1());
     }
 
+    @Override
+    public void onClick(View v) {
+        ItemStorage.addToCart(mLathe);
+        Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+    }
 
     public static Intent getStartIntent(Context context, AdapterGenerator adapterGenerator) {
         Intent intent = new Intent(context, LatheActivity.class);
