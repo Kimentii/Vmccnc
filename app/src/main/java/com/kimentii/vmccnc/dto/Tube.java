@@ -70,7 +70,7 @@ public class Tube implements AdapterGenerator<Tube> {
         TextView id = view.findViewById(R.id.tv_id);
         TextView name = view.findViewById(R.id.tv_name);
 
-        ImageStorage.setImageFromUrlToImageView(photo, AutomaticLine.IMAGE_FOLDER, getPhoto1());
+        ImageStorage.setImageFromUrlToImageView(photo, Tube.IMAGE_FOLDER, getPhoto1());
         id.setText(getDetail());
         name.setText(getModel());
         return view;

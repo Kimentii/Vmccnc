@@ -77,7 +77,7 @@ public class Livetool implements AdapterGenerator<Livetool> {
         TextView id = view.findViewById(R.id.tv_id);
         TextView name = view.findViewById(R.id.tv_name);
 
-        ImageStorage.setImageFromUrlToImageView(photo, AutomaticLine.IMAGE_FOLDER, getPhotoNames().get(0));
+        ImageStorage.setImageFromUrlToImageView(photo, Livetool.IMAGE_FOLDER, getPhotoNames().get(0));
         id.setText(getProduct_id());
         name.setText(getModel_of_machine_cnc());
         return view;
