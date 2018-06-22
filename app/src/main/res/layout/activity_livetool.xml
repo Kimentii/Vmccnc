@@ -36,10 +36,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_type" />
+                    android:text="@string/title_order1" />
 
                 <TextView
-                    android:id="@+id/tv_type"
+                    android:id="@+id/tv_order1"
                     style="@style/TextStyleNormal"
                     tools:text="Some Type" />
             </TableRow>
@@ -48,10 +48,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_manufacturer" />
+                    android:text="@string/title_code" />
 
                 <TextView
-                    android:id="@+id/tv_manufacturer"
+                    android:id="@+id/tv_code"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -59,10 +59,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_country" />
+                    android:text="@string/title_use_for" />
 
                 <TextView
-                    android:id="@+id/tv_country"
+                    android:id="@+id/tv_use_for"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -70,10 +70,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_cnc" />
+                    android:text="@string/title_producer" />
 
                 <TextView
-                    android:id="@+id/tv_cnc"
+                    android:id="@+id/tv_producer"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -81,10 +81,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_cnc_full" />
+                    android:text="@string/title_din" />
 
                 <TextView
-                    android:id="@+id/tv_cnc_full"
+                    android:id="@+id/tv_din"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -92,10 +92,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_workpiece" />
+                    android:text="@string/title_clamping_range" />
 
                 <TextView
-                    android:id="@+id/tv_workpiece"
+                    android:id="@+id/tv_clamping_range"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -103,10 +103,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_workpiece_weight" />
+                    android:text="@string/title_tool_holder" />
 
                 <TextView
-                    android:id="@+id/tv_workpiece_weight"
+                    android:id="@+id/tv_tool_holder"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -114,13 +114,67 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_size" />
+                    android:text="@string/title_s" />
 
                 <TextView
-                    android:id="@+id/tv_size"
+                    android:id="@+id/tv_s"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
+            <TableRow android:layout_width="match_parent">
+
+                <TextView
+                    style="@style/TextStyleBold"
+                    android:text="@string/title_speed_max" />
+
+                <TextView
+                    android:id="@+id/tv_speed_max"
+                    style="@style/TextStyleNormal" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent">
+
+                <TextView
+                    style="@style/TextStyleBold"
+                    android:text="@string/title_a" />
+
+                <TextView
+                    android:id="@+id/tv_a"
+                    style="@style/TextStyleNormal" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent">
+
+                <TextView
+                    style="@style/TextStyleBold"
+                    android:text="@string/title_b" />
+
+                <TextView
+                    android:id="@+id/tv_b"
+                    style="@style/TextStyleNormal" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent">
+
+                <TextView
+                    style="@style/TextStyleBold"
+                    android:text="@string/title_m1" />
+
+                <TextView
+                    android:id="@+id/tv_m1"
+                    style="@style/TextStyleNormal" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent">
+
+                <TextView
+                    style="@style/TextStyleBold"
+                    android:text="@string/title_coolant_supply" />
+
+                <TextView
+                    android:id="@+id/tv_coolant_supply"
+                    style="@style/TextStyleNormal" />
+            </TableRow>
         </TableLayout>
     </LinearLayout>
 

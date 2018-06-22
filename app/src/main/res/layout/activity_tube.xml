@@ -36,23 +36,12 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_type" />
-
-                <TextView
-                    android:id="@+id/tv_type"
-                    style="@style/TextStyleNormal"
-                    tools:text="Some Type" />
-            </TableRow>
-
-            <TableRow android:layout_width="match_parent">
-
-                <TextView
-                    style="@style/TextStyleBold"
                     android:text="@string/title_manufacturer" />
 
                 <TextView
                     android:id="@+id/tv_manufacturer"
-                    style="@style/TextStyleNormal" />
+                    style="@style/TextStyleNormal"
+                    tools:text="Some Type" />
             </TableRow>
 
             <TableRow android:layout_width="match_parent">
@@ -81,10 +70,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_cnc_full" />
+                    android:text="@string/title_year" />
 
                 <TextView
-                    android:id="@+id/tv_cnc_full"
+                    android:id="@+id/tv_year"
                     style="@style/TextStyleNormal" />
             </TableRow>
 
@@ -92,32 +81,10 @@
 
                 <TextView
                     style="@style/TextStyleBold"
-                    android:text="@string/title_workpiece" />
+                    android:text="@string/title_location" />
 
                 <TextView
-                    android:id="@+id/tv_workpiece"
-                    style="@style/TextStyleNormal" />
-            </TableRow>
-
-            <TableRow android:layout_width="match_parent">
-
-                <TextView
-                    style="@style/TextStyleBold"
-                    android:text="@string/title_workpiece_weight" />
-
-                <TextView
-                    android:id="@+id/tv_workpiece_weight"
-                    style="@style/TextStyleNormal" />
-            </TableRow>
-
-            <TableRow android:layout_width="match_parent">
-
-                <TextView
-                    style="@style/TextStyleBold"
-                    android:text="@string/title_size" />
-
-                <TextView
-                    android:id="@+id/tv_size"
+                    android:id="@+id/tv_location"
                     style="@style/TextStyleNormal" />
             </TableRow>
 

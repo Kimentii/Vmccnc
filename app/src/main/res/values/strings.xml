@@ -26,6 +26,19 @@
     <string name="title_z_axis">Z Axis:</string>
     <string name="title_spindle_speed">Spindle Speed:</string>
     <string name="title_tools">Tools(All/Live):</string>
+    <string name="title_order1">Order1:</string>
+    <string name="title_code">Code:</string>
+    <string name="title_use_for">Use For:</string>
+    <string name="title_producer">Producer:</string>
+    <string name="title_din">DIN:</string>
+    <string name="title_clamping_range">Clamping Range:</string>
+    <string name="title_tool_holder">Tool Holder:</string>
+    <string name="title_s">S:</string>
+    <string name="title_speed_max">Speed Max:</string>
+    <string name="title_a">A:</string>
+    <string name="title_b">B:</string>
+    <string name="title_m1">M1:</string>
+    <string name="title_coolant_supply">Coolant Supply:</string>
 
     <string name="two_dimensional_size">%sx%s</string>
     <string name="tools_all_live">%s/%s</string>
