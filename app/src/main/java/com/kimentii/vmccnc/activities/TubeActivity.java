@@ -31,8 +31,8 @@ public class TubeActivity extends AppCompatActivity implements View.OnClickListe
                 .getExtras().getSerializable(EXTRA_ADAPTER_GENERATOR);
         mTube = (Tube) adapterGenerator;
 
-        Button buttonAddToCart = findViewById(R.id.button_add_to_cart);
-        buttonAddToCart.setOnClickListener(this);
+        Button addToCartButton = findViewById(R.id.button_add_to_cart);
+        addToCartButton.setOnClickListener(this);
 
         ImageView photoImageView = findViewById(R.id.iv_photo);
         TextView manufacturerTextView = findViewById(R.id.tv_manufacturer);
