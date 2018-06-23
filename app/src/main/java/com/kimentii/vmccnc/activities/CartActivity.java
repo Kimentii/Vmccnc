@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
     private Toolbar mToolbar;
     private ActionMode.Callback mActionModeCallback;
     private ArrayList<AdapterGenerator> mSelectedItems = new ArrayList<>();
+    private boolean mIsActionMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,9 +94,23 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (id) {
             case R.id.action_enable_edit_mode:
                 startSupportActionMode(mActionModeCallback);
+                mIsActionMode = true;
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        AdapterGenerator clickedItem = (AdapterGenerator) parent.getItemAtPosition(position);
+        if (!isSelectedItem(clickedItem)) {
+            mSelectedItems.add(clickedItem);
+            highlightView(view);
+        } else {
+            mSelectedItems.remove(clickedItem);
+            unhighlightView(view);
+        }
+
     }
 
     public static Intent getStartIntent(Context context) {
@@ -102,17 +118,16 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
         return intent;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        AdapterGenerator clickedItem = (AdapterGenerator) parent.getItemAtPosition(position);
-        if (mSelectedItems.indexOf(clickedItem) == -1) {
-            mSelectedItems.add(clickedItem);
-            view.setBackgroundColor(getResources().getColor(R.color.selected_list_item));
-        } else {
-            mSelectedItems.remove(clickedItem);
-            view.setBackgroundColor(getResources().getColor(R.color.not_selected_list_item));
-        }
+    private void highlightView(View view) {
+        view.setBackgroundColor(getResources().getColor(R.color.selected_list_item));
+    }
 
+    private void unhighlightView(View view) {
+        view.setBackgroundColor(getResources().getColor(R.color.not_selected_list_item));
+    }
+
+    private boolean isSelectedItem(AdapterGenerator item) {
+        return (mSelectedItems.indexOf(item) != -1);
     }
 
     class ToolbarActionModeCallback implements ActionMode.Callback {
@@ -136,6 +151,7 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
                 case R.id.action_delete_selected:
                     ItemStorage.getCartItems().removeAll(mSelectedItems);
                     mode.finish();
+                    mIsActionMode = false;
                     break;
             }
             return false;
@@ -168,7 +184,13 @@ public class CartActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return ItemStorage.getCartItems().get(position).getCartView(CartActivity.this);
+            AdapterGenerator adapterGenerator = ItemStorage.getCartItems().get(position);
+            View view = adapterGenerator.getCartView(CartActivity.this);
+            Log.d(TAG, "getView: hasExpandedActionView: " + mToolbar.hasExpandedActionView());
+            if (mIsActionMode && isSelectedItem(adapterGenerator)) {
+                highlightView(view);
+            }
+            return view;
         }
     }
 }
