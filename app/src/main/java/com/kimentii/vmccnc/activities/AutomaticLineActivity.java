@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +40,11 @@ public class AutomaticLineActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_automatic_line);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Intent intent = getIntent();
         AdapterGenerator<AutomaticLine> adapterGenerator = (AdapterGenerator) intent.getExtras()
                 .getSerializable(EXTRA_ADAPTER_GENERATOR);
@@ -68,6 +74,12 @@ public class AutomaticLineActivity extends AppCompatActivity implements View.OnC
 
         Button addToCartButton = findViewById(R.id.button_add_to_cart);
         addToCartButton.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

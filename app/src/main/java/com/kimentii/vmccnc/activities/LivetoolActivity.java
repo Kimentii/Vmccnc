@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,11 @@ public class LivetoolActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_livetool);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         AdapterGenerator<Livetool> adapterGenerator = (AdapterGenerator<Livetool>) getIntent()
                 .getExtras().getSerializable(EXTRA_ADAPTER_GENERATOR);
@@ -65,16 +71,21 @@ public class LivetoolActivity extends AppCompatActivity implements View.OnClickL
         coolantSupply.setText(mLivetool.getCoolant_supply());
     }
 
-
-    public static Intent getStartIntent(Context context, AdapterGenerator adapterGenerator) {
-        Intent intent = new Intent(context, LivetoolActivity.class);
-        intent.putExtra(EXTRA_ADAPTER_GENERATOR, adapterGenerator);
-        return intent;
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
     public void onClick(View v) {
         ItemStorage.addToCart(mLivetool);
         Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+    }
+
+    public static Intent getStartIntent(Context context, AdapterGenerator adapterGenerator) {
+        Intent intent = new Intent(context, LivetoolActivity.class);
+        intent.putExtra(EXTRA_ADAPTER_GENERATOR, adapterGenerator);
+        return intent;
     }
 }

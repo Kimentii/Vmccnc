@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,11 @@ public class LatheActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lathe);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Button addToCartButton = findViewById(R.id.button_add_to_cart);
         addToCartButton.setOnClickListener(this);
@@ -62,6 +68,12 @@ public class LatheActivity extends AppCompatActivity implements View.OnClickList
         spindleSpeedTextView.setText(String.valueOf(mLathe.getSpindleSpeed()));
         toolsTextView.setText(String.format(getString(R.string.tools_all_live), mLathe.getToolsall(), mLathe.getToolslive()));
         ImageStorage.setImageFromUrlToImageView(imageView, Lathe.IMAGE_FOLDER, mLathe.getPhoto1());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
