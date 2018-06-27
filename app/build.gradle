@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'MzalApp'
+            keyPassword '[MpMM84]'
+            storeFile file('D:/useful_files/keystores/mzal_keystore.jks')
+            storePassword '[MpMM84]'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.mzal"
@@ -14,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
 }
