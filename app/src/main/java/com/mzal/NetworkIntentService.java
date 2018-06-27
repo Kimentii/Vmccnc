@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.mzal.activities.MainActivity;
+import com.mzal.database.MySqlHelper;
 import com.mzal.dto.AutomaticLine;
 import com.mzal.dto.Lathe;
 import com.mzal.dto.Livetool;

@@ -1,4 +1,4 @@
-package com.mzal;
+package com.mzal.database;
 
 import android.util.Log;
 
@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
