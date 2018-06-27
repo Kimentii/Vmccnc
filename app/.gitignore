@@ -25,4 +25,4 @@ local.properties
 # Android Studio captures folder
 captures/
 
-src/main/java/com/kimentii/vmccnc/SecretData.java
+src/main/java/com/mzal/SecretData.java
